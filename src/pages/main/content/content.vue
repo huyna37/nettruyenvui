@@ -1,0 +1,206 @@
+<template>
+    <div class='container tw-mt-[1rem]'>
+        <section class="tw-pl-0 tw-mb-[1rem] tw-px-[10px] tw-font-light" v-if="manga">
+            <i class="fa-solid fa-house"></i> /
+            <RouterLink :to="'/' + manga?.slug ?? ''">{{ manga.name }}</RouterLink> /
+            <div>
+                {{ chapter }}
+            </div>
+        </section>
+        <section class="row">
+            <div class='col-md-8 row'>
+                <div class='col-md-4'>
+                    <img :src='manga.coverImage' />
+                </div>
+                <div class='col-md-8'>
+                    <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ manga.name }}</h4>
+                    <h5 class='tw-my-3 tw-font-medium'>{{ manga.title }}</h5>
+                    <div class="tw-mb-2 tw-text-[14px]">
+                        <label class="tw-w-[100px] tw-inline-block">Tác giả</label>
+                        <span>{{ manga.author }}</span>
+                    </div>
+                    <div class="tw-mb-2 tw-text-[14px]">
+                        <label class="tw-w-[100px] tw-inline-block">Tình trạng</label>
+                        <span>đang cập nhật</span>
+                    </div>
+                    <div class="tw-mb-2 tw-text-[14px]">
+                        <label class="tw-w-[100px] tw-inline-block">Mới nhất</label>
+                        <span><a class="tw-text-orange-600" href="/horimiya/chap-122.8">chap 122</a></span>
+                    </div>
+                    <div class="mb-4 text-[14px]">
+                        <label class="tw-w-[100px] tw-inline-block">Lượt đọc</label>
+                        <span>{{ manga.views }}</span>
+                    </div>
+                    <div>
+                        <button
+                            class="tw-rounded-xl tw-mr-2 s1024:tw-mr-4 tw-px-3 tw-py-1 tw-bg-teal-600 tw-text-white tw-text-[14px] tw-font-light">Thích
+                            <span
+                                class="tw-ml-[5px] tw-px-[5px] tw-text-[12px] tw-bg-white tw-rounded-lg tw-text-teal-600">132</span>
+                        </button>
+                        <button
+                            class="tw-rounded-xl tw-mr-2 s1024:tw-mr-4 tw-px-3 tw-py-1 tw-bg-teal-600 tw-text-white tw-text-[14px] tw-font-light">Theo
+                            Dõi
+                            <span
+                                class="tw-ml-[5px] tw-px-[5px] tw-text-[12px] tw-bg-white tw-rounded-lg tw-text-teal-600">132</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class='col-md-4'>
+                <div class="tw-uppercase tw-text-orange-600">Nội dung</div>
+
+                <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
+                    {{ manga.description }}
+                </div>
+
+            </div>
+        </section>
+
+        <main class='row tw-mt-[20px] tw-text-center d-flex justify-content-center'>
+            <template v-for="(img, index) in visibleFiles" :key="index">
+                <img class="tw-w-[auto]"
+                    :src="`https://crawler.meoden.online/files?folder=${this.manga.name}/${this.chapter}&name=` + img" />
+            </template>
+            <div
+                class="tw-fixed tw-bottom-[10px] tw-left-0 tw-right-0 tw-w-[300px] tw-bg-black/50 tw-rounded-2xl tw-py-[10px] tw-mx-auto tw-flex tw-justify-center tw-gap-[10px] tw-z-50">
+                <RouterLink class="tw-block tw-w-[60px] tw-h-[30px] tw-bg-teal-600 tw-text-white tw-text-center tw-rounded-lg"
+                    :to="prePage">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="tw-w-6 tw-h-6 tw-inline-block">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+                    </svg>
+                </RouterLink>
+                <div class="tw-d-flex tw-chapter-select tw-select-2 tw-relative tw-w-[120px] tw-cursor-pointer">
+                    <span
+                        class="tw-flex justify-content-center align-items-center tw-bg-teal-600 tw-text-white tw-rounded-lg tw-h-[30px] tw-px-[10px] tw-text-[14px] tw-font-light">Chapter
+                        129</span>
+                    <div
+                        class="tw-select-option tw-option-2 tw-absolute tw-bottom-0 tw-left-0 tw-w-[120px] tw-min-h-[31px] tw-max-h-[300px] tw-divide-y tw-rounded-lg tw-bg-teal-600 tw-text-white tw-shadow tw-hidden">
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <section class="tw-mt-[1rem] row">
+            <h2
+                class="tw-color-[red] tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
+                <a href="/chap-moi-nhat">CHƯƠNG MỚI NHẤT</a>
+            </h2>
+            <div
+                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
+                <img class="tw-w-full tw-h-full "
+                    src="https://s199.imacdn.com/tt24/2023/05/22/09aaa9a31f48e194_c0a61ea6ac655552_3231716847250452185710.jpg"
+                    data-id="178109" alt="Shounen No Abyss chap 140">
+                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
+                </p>
+            </div>
+            <div
+                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
+                <img class="tw-w-full tw-h-full"
+                    src="https://s199.imacdn.com/tt24/2023/06/19/e402905856eb9e11_bf79058b6e476049_3687316871699546185710.jpg"
+                    data-id="178109" alt="Shounen No Abyss chap 140">
+                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
+                </p>
+            </div>
+            <div
+                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
+                <img class="tw-w-full tw-h-full"
+                    src="https://s199.imacdn.com/tt24/2023/02/28/6a2d2e29189f633a_c2fddbc8ed1f30ae_38529167759767669674.jpg"
+                    data-id="178109" alt="Shounen No Abyss chap 140">
+                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
+                </p>
+            </div>
+            <div
+                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
+                <img class="tw-w-full tw-h-full"
+                    src="https://s200.imacdn.com/tt24/2020/05/13/34d6d47a9a9b1549_e63854c61da6231c_514181589331148745957.jpg"
+                    data-id="178109" alt="Shounen No Abyss chap 140">
+                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
+                </p>
+            </div>
+            <div
+                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
+                <img class="tw-w-full tw-h-full"
+                    src="https://s199.imacdn.com/tt24/2023/01/03/9f5bf2f4e9b2d3ae_3555242d7b4177b5_40402167273074159674.jpg"
+                    data-id="178109" alt="Shounen No Abyss chap 140">
+                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
+                </p>
+            </div>
+            <div
+                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
+                <img class="tw-w-full tw-h-full"
+                    src="https://s199.imacdn.com/tt24/2023/06/02/b868213fc2e3ad7e_6c0723940e426a49_4212016856983948185710.jpg"
+                    data-id="178109" alt="Shounen No Abyss chap 140">
+                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
+                </p>
+            </div>
+        </section>
+
+    </div>
+</template>
+
+<script>
+import { useRoute } from 'vue-router';
+import instance from '@/Unilities/axios/index';
+import store from '@/store/store';
+
+export default {
+    name: "content-main",
+    setup() {
+        const route = useRoute();
+        const name = route.params.name;
+        const chapter = route.params.chapter;
+
+        return {
+            name,
+            chapter
+        };
+    },
+    data() {
+        return {
+            data: [],
+            visibleFiles: [],
+            manga: {}
+        }
+    },
+    async created() {
+        await this.getManga();
+        await this.getContentByName();
+        this.renderFiles();
+    },
+    methods: {
+        async getManga() {
+            this.manga = (await instance.get('/manga/' + this.name)).data.result;
+        },
+        async getContentByName() {
+            this.data = (await instance.get(`/files/getListFiles?folder=${this.manga.name}/${this.chapter}`)).data;
+        },
+        onImageLoad() {
+            store.dispatch('app/setIsLoading', false);
+        },
+        renderFiles() {
+            const numVisibleFiles = 7; // Số phần tử hiển thị ban đầu
+
+            this.visibleFiles = this.data.files.slice(0, numVisibleFiles);
+
+            const remainingFiles = this.data.files.slice(numVisibleFiles);
+            if (remainingFiles.length > 0) {
+                // Tạo delay 1 giây để load phần tử còn lại
+                setTimeout(() => {
+                    this.visibleFiles = this.visibleFiles.concat(remainingFiles);
+                }, 2000);
+            }
+        }
+    },
+    computed: {
+        prePage() {
+            const regex = /(\d+)/;
+            const matches = this.chapter.match(regex);
+            if(matches[0] != 1) {
+                return `/${this.name}/chap-${matches[0] - 1}`;
+            }
+            return "#";
+        }
+    }
+}
+</script>

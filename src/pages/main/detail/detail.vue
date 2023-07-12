@@ -1,0 +1,337 @@
+<template>
+    <div class='container tw-mt-[1rem]' v-if="data">
+        <section class="row">
+            <div class='col-md-8 row'>
+                <div class='col-md-4 col-sm-12'>
+                    <img :src='data.coverImage' />
+                </div>
+                <div class='col-md-8'>
+                    <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ data.name }}</h4>
+                    <h5 class='tw-my-3 tw-font-medium'>{{ data.title }}</h5>
+                    <div class="tw-mb-2 tw-text-[14px]">
+                        <label class="tw-w-[100px] tw-inline-block">Tác giả</label>
+                        <span>{{ data.author }}</span>
+                    </div>
+                    <div class="tw-mb-2 tw-text-[14px]">
+                        <label class="tw-w-[100px] tw-inline-block">Tình trạng</label>
+                        <span>{{ data.views ? 'Done' : 'In Progress' }}</span>
+                    </div>
+                    <div class="tw-mb-2 tw-text-[14px]">
+                        <label class="tw-w-[100px] tw-inline-block">Mới nhất</label>
+                        <span><a class="tw-text-orange-600" href="/horimiya/chap-122.8">chap 122</a></span>
+                    </div>
+                    <div class="mb-4 text-[14px]">
+                        <label class="tw-w-[100px] tw-inline-block">Lượt đọc</label>
+                        <span>{{ data.views }}</span>
+                    </div>
+                    <div>
+                        <button
+                            class="tw-rounded-xl tw-mr-2 s1024:tw-mr-4 tw-px-3 tw-py-1 tw-bg-teal-600 tw-text-white tw-text-[14px] tw-font-light">Thích
+                            <span
+                                class="tw-ml-[5px] tw-px-[5px] tw-text-[12px] tw-bg-white tw-rounded-lg tw-text-teal-600">132</span>
+                        </button>
+                        <button
+                            class="tw-rounded-xl tw-mr-2 s1024:tw-mr-4 tw-px-3 tw-py-1 tw-bg-teal-600 tw-text-white tw-text-[14px] tw-font-light">Theo
+                            Dõi
+                            <span
+                                class="tw-ml-[5px] tw-px-[5px] tw-text-[12px] tw-bg-white tw-rounded-lg tw-text-teal-600">132</span>
+                        </button>
+                    </div>
+
+                </div>
+                <div class="tw-mt-[20px] s768:tw-mt-[30px] tw-uppercase tw-text-orange-600">Nội dung</div>
+
+                <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
+                    {{ data.description }}
+                </div>
+
+                <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
+                    <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                        href="/the-loai/comedy">Comedy</a>
+                    <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                        href="/the-loai/school-life">School Life</a>
+                    <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                        href="/the-loai/shounen">Shounen</a>
+                    <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                        href="/the-loai/romance">Romance</a>
+                </div>
+
+                <div class="tw-mt-[20px] s768:tw-mt-[30px] d-flex justify-content-between">
+                    <span class="tw-uppercase tw-text-orange-600 ">Danh sách chap</span>
+                    <div>
+                        <input
+                            class="tw-pl-[7px] tw-rounded-full tw-w-full tw-text-[14px]focus:tw-border-red-200 tw-border-violet-200 tw-outline tw-outline-slate-200"
+                            @input="debouncedHandleInput" placeholder="Tìm kiếm" />
+                    </div>
+                </div>
+
+                <div class="tw-mt-[10px]">
+                    <div
+                        class="tw-w-full tw-flex tw-gap-2 tw-justify-between tw-border-b dark:tw-border-slate-600 tw-mb-2 tw-pb-2 tw-font-light">
+                        <span class="tw-grow tw-min-w-[120px] chapter-name">Tên chap</span>
+                        <span class="tw-shrink tw-text-right chapter-update">Cập nhật</span>
+                        <span class="tw-min-w-[80px] tw-shrink-0 tw-text-right chapter-views">Lượt đọc</span>
+                    </div>
+                    <div class="chapter-list tw-relative tw-overflow-auto tw-overscroll-contain tw-max-h-[300px] tw-w-full tw-text-[14px] tw-font-light tw-ps-container tw-ps-theme-default"
+                        data-ps-id="05e4af89-4385-b36d-f577-27e7e27d8ef3">
+                        <template v-if="!listChapter || listChapter.length == 0">
+                            <div class="tw-shrink tw-text-center tw-mb-2 chapter-update">Không Có Kết Quả</div>
+                        </template>
+                        <template v-else>
+                            <div v-for="chapter in listChapter" v-bind:key="chapter"
+                                class="tw-w-full tw-flex tw-gap-2 tw-justify-between tw-border-b dark:tw-border-slate-600 tw-mb-2 tw-pb-2 chapter-item">
+                                <span class="tw-grow tw-min -w-[120px] chapter-name">
+                                    <RouterLink :to="`${$route.path}/${chapter.slug}`">
+                                        {{ chapter.title }}
+                                    </RouterLink>
+
+                                </span>
+                                <span class="tw-shrink tw-text-right chapter-update">
+                                    {{ chapter.createdAt?.formatDate() }}
+                                </span>
+                                <span class="tw-min-w-[80px] tw-shrink-0 tw-text-right tw-chapter-views">
+                                    4,319
+                                </span>
+                            </div>
+                        </template>
+
+
+                    </div>
+                    <div @click="loadMore"
+                        class="chapter-more tw-mb-3 tw-inline-block tw-cursor-pointer tw-rounded-xl tw-bg-orange-600 dark:tw-bg-orange-700 tw-px-4 tw-py-1 tw-text-white tw-text-[14px] tw-font-light">
+                        <span>
+                            <template v-if="isLoadingMore">
+                                <i class="fa-solid fa-spinner tw-animate-spin"></i>
+                            </template>
+                            <template v-else>
+                                Xem Thêm
+                            </template>
+                        </span>
+                    </div>
+
+                    <div class="tw-mt-[20px] tw-text-[14px] tw-font-extralight tw-manga-tag">
+                        Từ khoá:
+                        <a class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" href="/nett">nett</a>
+                        <a class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" href="/nett">nett</a>
+                        <a class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" href="/nett">nett</a>
+                    </div>
+
+                </div>
+            </div>
+            <div class='col-md-4'>
+                <div
+                    class="tw-shrink-0 tw-mt-[20px] tw-s1024:mt-0 tw-s1024:w-[320px] tw-s1280:w-[354px] tw-s1024:pl-[20px] tw-s1280:pl-[34px]">
+                    <h2
+                        class="tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
+                        <a href="/top-tuan">Top tuần</a>
+                    </h2>
+                    <div class="tw-s480:grid tw-s480:grid-cols-2 tw-s768:grid-cols-4 tw-s1024:block tw-gap-[10px]">
+                        <div class="tw-mb-4 tw-s480:mb-0 tw-s1024:mb-4">
+                            <a href="/mashle">
+                                <div class="tw-relative tw-rounded-xl tw-overflow-hidden">
+                                    <img class="tw-w-full"
+                                        src="https://s199.imacdn.com/tt24/2022/11/24/183415958654a16d_84e55e1ce8b6b7df_7556516692763841118684.jpg"
+                                        data-src="https://s199.imacdn.com/tt24/2022/11/24/183415958654a16d_84e55e1ce8b6b7df_7556516692763841118684.jpg"
+                                        data-id="100164" alt="Mashle">
+
+                                    <div
+                                        class="tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] tw-pt-[20px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
+                                        <span class="tw-text-[12px] tw-font-extralight tw-dark:text-teal-300">43,406 lượt
+                                            đọc</span>
+                                        <h3 class="tw-font-light tw-line-clamp-1">Mashle</h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="tw-mb-4 tw-s480:mb-0 tw-s1024:mb-4">
+                            <a href="/dia-nguc-cuc-lac">
+                                <div class="tw-relative tw-rounded-xl tw-overflow-hidden">
+                                    <img class="tw-w-full"
+                                        src="https://s199.imacdn.com/tt24/2023/03/15/5c524aa0847fd25f_6c733438b313a2bd_98461167886739529674.jpg"
+                                        data-src="https://s199.imacdn.com/tt24/2023/03/15/5c524aa0847fd25f_6c733438b313a2bd_98461167886739529674.jpg"
+                                        data-id="100759" alt="Địa Ngục Cực Lạc">
+
+                                    <div
+                                        class="tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] tw-pt-[20px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
+                                        <span class="tw-text-[12px] tw-font-extralight tw-dark:text-teal-300">30,088 lượt
+                                            đọc</span>
+                                        <h3 class="tw-font-light tw-line-clamp-1">Địa Ngục Cực Lạc</h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="tw-mb-4 tw-s480:mb-0 tw-s1024:mb-4">
+                            <a href="/jitsu-wa-ore-saikyou-deshita">
+                                <div class="tw-relative tw-rounded-xl tw-overflow-hidden">
+                                    <img class="tw-w-full"
+                                        src="https://s200.imacdn.com/tt24/2022/02/16/a13c272b8c540a15_83718d33edd59c5f_73070164499932289674.jpg"
+                                        data-src="https://s200.imacdn.com/tt24/2022/02/16/a13c272b8c540a15_83718d33edd59c5f_73070164499932289674.jpg"
+                                        data-id="100526" alt="Jitsu wa Ore, Saikyou deshita?">
+
+                                    <div
+                                        class="tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] tw-pt-[20px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
+                                        <span class="tw-text-[12px] tw-font-extralight tw-dark:text-teal-300">7,299 lượt
+                                            đọc</span>
+                                        <h3 class="tw-font-light tw-line-clamp-1">Jitsu wa Ore, Saikyou deshita?</h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="tw-mb-4 tw-s480:mb-0 tw-s1024:mb-4">
+                            <a href="/oshi-no-ko">
+                                <div class="tw-relative tw-rounded-xl tw-overflow-hidden">
+                                    <img class="tw-w-full"
+                                        src="https://s200.imacdn.com/tt24/2020/08/31/1ff89177099ae169_8df30c2a7aa13f62_786491598878818845957.jpg"
+                                        data-src="https://s200.imacdn.com/tt24/2020/08/31/1ff89177099ae169_8df30c2a7aa13f62_786491598878818845957.jpg"
+                                        data-id="100259" alt="Oshi No Ko">
+
+                                    <div
+                                        class="tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] tw-pt-[20px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
+                                        <span class="tw-text-[12px] tw-font-extralight tw-dark:text-teal-300">22,811 lượt
+                                            đọc</span>
+                                        <h3 class="tw-font-light tw-line-clamp-1">Oshi No Ko</h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="container tw-px-[10px] tw-mt-[20px] s768:tw-mt-[30px]">
+            <h2 class="tw-w-full tw-text-orange-600 tw-mb-2 tw-uppercase">ĐỪNG BỎ LỠ</h2>
+            <div
+                class="tw-flex tw-snap-x tw-snap-mandatory tw-overflow-x-auto s640:tw-grid s640:tw-grid-cols-4 tw-gap-[10px]">
+                <div
+                    class="tw-relative tw-snap-always tw-snap-start tw-shrink-0 tw-w-[260px] s640:tw-w-auto s640:tw-h-auto">
+                    <a href="/mememori-kun-ni-wa-kanawanai">
+                        <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
+                            <img class="tw-w-full tw-h-full"
+                                src="https://s199.imacdn.com/tt24/2023/03/05/922f9aa7e2ae28e0_a19aa2263b7a3d20_60809167800928629674.jpg"
+                                data-src="https://s199.imacdn.com/tt24/2023/03/05/922f9aa7e2ae28e0_a19aa2263b7a3d20_60809167800928629674.jpg"
+                                data-id="100747" alt="Mememori-kun ni wa Kanawanai">
+                            <span
+                                class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">1.7K
+                                <i class="fas fa-eye"></i></span>
+                        </div>
+                        <h3 class="tw-text-[14px] s360:tw-text-[16px] tw-text-left s640:tw-text-center line-clamp-2">
+                            Mememori-kun ni wa
+                            Kanawanai</h3>
+                    </a>
+                </div>
+                <div
+                    class="tw-relative tw-snap-always tw-snap-start tw-shrink-0 tw-w-[260px] s640:tw-w-auto s640:tw-h-auto">
+                    <a class="" href="/ke-duoc-trieu-hoi-toi-the-gioi-gia-tuong-vo-so-lan">
+                        <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
+                            <img class="tw-w-full tw-h-full"
+                                src="https://s200.imacdn.com/tt24/2021/03/06/0d3e928b6caeb807_ee4893465c1b0dbb_696931615028955845957.jpg"
+                                data-src="https://s200.imacdn.com/tt24/2021/03/06/0d3e928b6caeb807_ee4893465c1b0dbb_696931615028955845957.jpg"
+                                data-id="100336" alt="Kẻ Được Triệu Hồi Tới Thế Giới Giả Tưởng Vô Số Lần!!">
+                            <span
+                                class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">49.3K
+                                <i class="fas fa-eye"></i></span>
+                        </div>
+                        <h3 class="tw-text-[14px] s360:tw-text-[16px] tw-text-left s640:tw-text-center line-clamp-2">Kẻ Được
+                            Triệu Hồi
+                            Tới Thế Giới Giả Tưởng Vô Số Lần!!</h3>
+                    </a>
+                </div>
+                <div
+                    class="tw-relative tw-snap-always tw-snap-start tw-shrink-0 tw-w-[260px] s640:tw-w-auto s640:tw-h-auto">
+                    <a class="" href="/hoshino-nham-mat-lai-di">
+                        <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
+                            <img class="tw-w-full tw-h-full"
+                                src="https://s200.imacdn.com/tt24/2020/05/21/e4dd49697d485233_d2569ac5c2673f43_589961590070395345957.jpg"
+                                data-src="https://s200.imacdn.com/tt24/2020/05/21/e4dd49697d485233_d2569ac5c2673f43_589961590070395345957.jpg"
+                                data-id="100135" alt="Hoshino, Nhắm Mắt Lại Đi">
+                            <span
+                                class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">29.2K
+                                <i class="fas fa-eye"></i></span>
+                        </div>
+                        <h3 class="tw-text-[14px] s360:tw-text-[16px] tw-text-left s640:tw-text-center line-clamp-2">
+                            Hoshino, Nhắm Mắt
+                            Lại Đi</h3>
+                    </a>
+                </div>
+                <div
+                    class="tw-relative tw-snap-always tw-snap-start tw-shrink-0 tw-w-[260px] s640:tw-w-auto s640:tw-h-auto">
+                    <a class="" href="/trum-cuoi-la-ta">
+                        <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
+                            <img class="tw-w-full tw-h-full"
+                                src="https://s199.imacdn.com/tt24/2023/06/16/69cd6f3629967663_036bf6f32267b62a_12985116869108617185710.jpg"
+                                data-src="https://s199.imacdn.com/tt24/2023/06/16/69cd6f3629967663_036bf6f32267b62a_12985116869108617185710.jpg"
+                                data-id="100872" alt="Trùm Cuối Là Ta">
+                            <span
+                                class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">104
+                                <i class="fas fa-eye"></i></span>
+                        </div>
+                        <h3 class="tw-text-[14px] s360:tw-text-[16px] tw-text-left s640:tw-text-center line-clamp-2">Trùm
+                            Cuối Là Ta
+                        </h3>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</template>
+
+<script>
+import instance from '@/Unilities/axios';
+import { useRoute } from 'vue-router';
+import { debounce } from 'lodash';
+
+export default {
+    name: "detail-main",
+    setup() {
+        const route = useRoute();
+        const name = route.params.name;
+
+        return {
+            name
+        };
+    },
+    data() {
+        return {
+            data: {},
+            listChapter: [],
+            currentPage: 1,
+            isLoadingMore: false,
+            inputSearch: ''
+        }
+    },
+    async created() {
+        await this.getDetail();
+        this.listChapter = (await this.getListChapter())?.data;
+    },
+    methods: {
+        async getDetail() {
+            this.data = (await instance.get('/manga/' + this.name)).data.result;
+        },
+        async getListChapter(filterBy) {
+            let url = `/chapter/?page=${this.currentPage}&index=10&sortField=number&sortOrder=desc&filterOptions={"manga":"${this.data._id}"}`;
+            if (filterBy) {
+                url = `/chapter/?page=${this.currentPage}&index=10&sortField=number&sortOrder=desc&filterOptions={"manga":"${this.data._id}", "title": "${filterBy}"}`;
+            }
+            return (await instance.get(url)).data.result;
+        },
+        async loadMore() {
+            this.isLoadingMore = true;
+            this.currentPage += 1;
+            const more = await this.getListChapter();
+            this.listChapter = [...this.listChapter, ...more.data];
+            this.isLoadingMore = false;
+        },
+        async handleInput(event) {
+            console.log(event.target.value);
+            this.listChapter = (await this.getListChapter(event.target.value)).data;
+        },
+    },
+    computed: {
+        debouncedHandleInput() {
+            return debounce(this.handleInput, 300); // Thời gian chờ 300ms (0.3 giây)
+        },
+    },
+}
+</script>

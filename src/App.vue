@@ -1,26 +1,38 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <loading v-show="isLoading" v-model:active="isLoading" :can-cancel="true" :on-cancel="onCancel" :is-full-page="true" />
+  <router-view></router-view>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
+import { mapState } from 'vuex';
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  computed: {
+        ...mapState({
+            isLoading: state => state.app.isLoading
+        })
+    },
+    components: {
+        Loading
+    },
 }
 </script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.scrollbar::-webkit-scrollbar {
+    width: 0.5rem;
+    /* Chiều rộng của thanh cuộn */
 }
-</style>
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #e2e8f0;
+    /* Màu của thanh cuộn */
+    border-radius: 0.25rem;
+    /* Đường viền cong của thanh cuộn */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+    /* Màu của vùng bên trong thanh cuộn */
+}</style>
