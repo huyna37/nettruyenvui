@@ -60,3 +60,7 @@ String.prototype.formatDate = function (type) {
   Number.prototype.formatMoney = function() {
     return new Intl.NumberFormat().format(this);
   };
+
+  String.prototype.upperCaseFirst = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  };

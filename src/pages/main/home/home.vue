@@ -44,8 +44,8 @@
             </h2>
             <template v-for="(data3, index3) in secondSession" v-bind:key="index3">
                 <RouterLink :to="data3.slug"
-                    class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
-                    <img class="tw-w-full tw-h-full " :src="data3.coverImage" :alt="data3.name">
+                    class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl'>
+                    <img class="tw-h-[20rem] tw-w-full tw-h-full tw-rounded-xl" :src="data3.coverImage" :alt="data3.name">
                     <p
                         class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>
                         {{ data3.name }}

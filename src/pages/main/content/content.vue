@@ -1,14 +1,16 @@
 <template>
     <div class='container tw-mt-[1rem]'>
-        <section class="tw-pl-0 tw-mb-[1rem] tw-px-[10px] tw-font-light" v-if="manga">
-            <i class="fa-solid fa-house"></i> /
-            <RouterLink :to="'/' + manga?.slug ?? ''">{{ manga.name }}</RouterLink> /
-            <div>
-                {{ chapter }}
+        <section class="tw-pl-0 tw-mb-[1rem] tw-px-[10px] d-flex align-items-center" v-if="manga">
+            <i class="fa-solid fa-house tw-mr-2 "></i>
+            <span class="tw-mr-1 tw-font-bold">/</span>
+            <RouterLink :to="'/' + manga?.slug ?? ''" class="tw-mr-1 tw-font-bold">{{ manga.name }}</RouterLink>
+            <span class="tw-font-bold tw-mr-1">/</span>
+            <div class="tw-font-bold">
+                {{ chapter.upperCaseFirst() }}
             </div>
         </section>
         <section class="row">
-            <div class='col-md-8 row'>
+            <div class='col-md-8 row max-md:tw-mb-2'>
                 <div class='col-md-4'>
                     <img :src='manga.coverImage' />
                 </div>
@@ -27,7 +29,7 @@
                         <label class="tw-w-[100px] tw-inline-block">Mới nhất</label>
                         <span><a class="tw-text-orange-600" href="/horimiya/chap-122.8">chap 122</a></span>
                     </div>
-                    <div class="mb-4 text-[14px]">
+                    <div class="mb-2 text-[14px]">
                         <label class="tw-w-[100px] tw-inline-block">Lượt đọc</label>
                         <span>{{ manga.views }}</span>
                     </div>
@@ -48,7 +50,6 @@
             </div>
             <div class='col-md-4'>
                 <div class="tw-uppercase tw-text-orange-600">Nội dung</div>
-
                 <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
                     {{ manga.description }}
                 </div>
@@ -63,7 +64,8 @@
             </template>
             <div
                 class="tw-fixed tw-bottom-[10px] tw-left-0 tw-right-0 tw-w-[300px] tw-bg-black/50 tw-rounded-2xl tw-py-[10px] tw-mx-auto tw-flex tw-justify-center tw-gap-[10px] tw-z-50">
-                <RouterLink class="tw-block tw-w-[60px] tw-h-[30px] tw-bg-teal-600 tw-text-white tw-text-center tw-rounded-lg"
+                <RouterLink
+                    class="tw-block tw-w-[60px] tw-h-[30px] tw-bg-teal-600 tw-text-white tw-text-center tw-rounded-lg"
                     :to="prePage">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="tw-w-6 tw-h-6 tw-inline-block">
@@ -71,13 +73,35 @@
                     </svg>
                 </RouterLink>
                 <div class="tw-d-flex tw-chapter-select tw-select-2 tw-relative tw-w-[120px] tw-cursor-pointer">
-                    <span
-                        class="tw-flex justify-content-center align-items-center tw-bg-teal-600 tw-text-white tw-rounded-lg tw-h-[30px] tw-px-[10px] tw-text-[14px] tw-font-light">Chapter
-                        129</span>
-                    <div
-                        class="tw-select-option tw-option-2 tw-absolute tw-bottom-0 tw-left-0 tw-w-[120px] tw-min-h-[31px] tw-max-h-[300px] tw-divide-y tw-rounded-lg tw-bg-teal-600 tw-text-white tw-shadow tw-hidden">
+                    <div class="btn-group dropup">
+                        <span data-bs-toggle="dropdown" aria-expanded="false"
+                            class="tw-flex justify-content-center align-items-center tw-bg-teal-600 tw-text-white tw-rounded-lg tw-h-[30px] tw-px-[10px] tw-text-[14px] tw-font-light">
+                            Chapter {{ currentChapter }}</span>
+                        <div
+                            class="tw-select-option tw-option-2 tw-absolute tw-bottom-0 tw-left-0 tw-w-[120px] tw-min-h-[31px] tw-max-h-[300px] tw-divide-y tw-rounded-lg tw-bg-teal-600 tw-text-white tw-shadow tw-hidden">
+                        </div>
+                        <ul class="dropdown-menu tw-overflow-auto tw-h-[15rem] tw-pt-0 tw-mb-[7px]">
+                            <li v-for="chapter in listChapter" v-bind:key="chapter">
+                                <RouterLink
+                                    :class="{'active':chapter?.number == currentChapter}"
+                                    class="tw-block tw-h-[2rem] tw-bg-yellow-600 tw-text-white tw-text-center dropdown-item"
+                                    :to="`/${this.name}/chap-${chapter?.number}`">
+                                    {{ manga.title }}
+                                </RouterLink>
+                            </li>
+                        </ul>
                     </div>
+
                 </div>
+                <RouterLink
+                    class="tw-block tw-w-[60px] tw-h-[30px] tw-bg-teal-600 tw-text-white tw-text-center tw-rounded-lg"
+                    :to="nextPage">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="tw-w-6 tw-h-6 tw-inline-block">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3">
+                        </path>
+                    </svg>
+                </RouterLink>
             </div>
         </main>
 
@@ -148,27 +172,43 @@ export default {
     name: "content-main",
     setup() {
         const route = useRoute();
-        const name = route.params.name;
-        const chapter = route.params.chapter;
+        let name = route.params.name;
+        let chapter = route.params.chapter;
 
+        
         return {
             name,
-            chapter
+            chapter,
+            route
         };
     },
     data() {
         return {
             data: [],
             visibleFiles: [],
-            manga: {}
+            manga: {},
+            listChapter: [],
+            currentChapter: 0
         }
     },
     async created() {
         await this.getManga();
         await this.getContentByName();
         this.renderFiles();
+        await this.getNewstChapter();
+        this.getCurrentChapter();
     },
     methods: {
+        getCurrentChapter() {
+            const regex = /(\d+(\.\d+)?)/;
+            const matches = this.chapter.match(regex);
+            this.currentChapter = parseFloat(matches[0]);
+        },
+        async getNewstChapter() {
+            let url = `/chapter/?sortField=number&sortOrder=desc&filterOptions={"manga":"${this.manga._id}"}`;
+            const result = (await instance.get(url)).data.result;
+            this.listChapter = result?.data;
+        },
         async getManga() {
             this.manga = (await instance.get('/manga/' + this.name)).data.result;
         },
@@ -194,13 +234,40 @@ export default {
     },
     computed: {
         prePage() {
-            const regex = /(\d+)/;
-            const matches = this.chapter.match(regex);
-            if(matches[0] != 1) {
-                return `/${this.name}/chap-${matches[0] - 1}`;
-            }
-            return "#";
+            let page = '#';
+            this.listChapter.forEach((chapter, index) => {
+                if(chapter.number === this.currentChapter) {
+                    page = `/${this.name}/chap-${this.listChapter[index + 1].number}`;
+                }
+            })
+            return page;
+        },
+        nextPage() {
+            let page = '#';
+            this.listChapter.forEach((chapter, index) => {
+                if(chapter.number === this.currentChapter) {
+                    page = `/${this.name}/chap-${this.listChapter[index - 1].number}`;
+                }
+            })
+            return page;
+        },
+        newestPage() {
+            return this.listChapter[0]?.number;
+        }
+    },
+    watch: {
+        'route.params.chapter': function(data) {
+            this.chapter = data;
+            this.getCurrentChapter();
         }
     }
 }
 </script>
+
+<style>
+.active {
+    color: var(--bs-dropdown-link-active-color);
+    text-decoration: none;
+    background-color: #dc3545!important
+}
+</style>
