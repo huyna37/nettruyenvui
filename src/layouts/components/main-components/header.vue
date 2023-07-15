@@ -8,17 +8,17 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Danh Sách</a>
+          <RouterLink class="nav-link active" aria-current="page" to="/danh-sach">Danh Sách</RouterLink>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#">Truyện Hot</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Bảng Xếp Hạng</a>
-        </li>
+        </li> -->
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2 tw-text-[13px]" type="search" placeholder="Search" aria-label="Search">
+      <form class="d-flex" role="search" v-on:submit.prevent="search">
+        <input v-model="input" class="form-control me-2 tw-text-[13px]" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success tw-text-[13px] tw-whitespace-nowrap" type="submit">Tìm Kiếm</button>
       </form>
     </div>
@@ -32,6 +32,7 @@ export default {
     name: "header-main",
     data() {
         return {
+          input: ''
         }
     },
     created() {
@@ -40,7 +41,9 @@ export default {
        
     },
     methods: {
-       
+      search() {
+        this.$router.push(`/danh-sach/${this.input}`)
+      }
     }
 }
 </script>

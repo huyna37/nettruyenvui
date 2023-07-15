@@ -20,6 +20,9 @@ export default {
 }
 </script>
 <style>
+.active-link {
+    color: red !important
+}
 .scrollbar::-webkit-scrollbar {
     width: 0.5rem;
     /* Chiều rộng của thanh cuộn */

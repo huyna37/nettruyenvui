@@ -83,10 +83,10 @@
                         <ul class="dropdown-menu tw-overflow-auto tw-h-[15rem] tw-pt-0 tw-mb-[7px]">
                             <li v-for="chapter in listChapter" v-bind:key="chapter">
                                 <RouterLink
-                                    :class="{'active':chapter?.number == currentChapter}"
+                                    :class="{'active-dropdown':chapter?.number == currentChapter}"
                                     class="tw-block tw-h-[2rem] tw-bg-yellow-600 tw-text-white tw-text-center dropdown-item"
                                     :to="`/${this.name}/chap-${chapter?.number}`">
-                                    {{ manga.title }}
+                                    {{ chapter.title }}
                                 </RouterLink>
                             </li>
                         </ul>
@@ -206,21 +206,26 @@ export default {
         },
         async getNewstChapter() {
             let url = `/chapter/?sortField=number&sortOrder=desc&filterOptions={"manga":"${this.manga._id}"}`;
-            const result = (await instance.get(url)).data.result;
+            const result = (await instance.get(url))?.data?.result;
             this.listChapter = result?.data;
         },
         async getManga() {
             this.manga = (await instance.get('/manga/' + this.name)).data.result;
         },
         async getContentByName() {
-            this.data = (await instance.get(`/files/getListFiles?folder=${this.manga.name}/${this.chapter}`)).data;
+            try{
+                this.data = (await instance.get(`/files/getListFiles?folder=${this.manga.name}/${this.chapter}`)).data;
+            }
+            catch(e){
+                this.data = [];
+            }
         },
         onImageLoad() {
             store.dispatch('app/setIsLoading', false);
         },
         renderFiles() {
             const numVisibleFiles = 7; // Số phần tử hiển thị ban đầu
-
+            if(!this.data) return;
             this.visibleFiles = this.data.files.slice(0, numVisibleFiles);
 
             const remainingFiles = this.data.files.slice(numVisibleFiles);
@@ -236,7 +241,7 @@ export default {
         prePage() {
             let page = '#';
             this.listChapter.forEach((chapter, index) => {
-                if(chapter.number === this.currentChapter) {
+                if(chapter.number === this.currentChapter && this.listChapter[index]?.number &&  this.listChapter[index + 1]?.number) {
                     page = `/${this.name}/chap-${this.listChapter[index + 1].number}`;
                 }
             })
@@ -245,7 +250,7 @@ export default {
         nextPage() {
             let page = '#';
             this.listChapter.forEach((chapter, index) => {
-                if(chapter.number === this.currentChapter) {
+                if(chapter.number === this.currentChapter && this.listChapter[index]?.number && this.listChapter[index - 1]?.number) {
                     page = `/${this.name}/chap-${this.listChapter[index - 1].number}`;
                 }
             })
@@ -257,15 +262,17 @@ export default {
     },
     watch: {
         'route.params.chapter': function(data) {
-            this.chapter = data;
-            this.getCurrentChapter();
+            if(data) {
+                this.chapter = data;
+                this.getCurrentChapter();
+            }
         }
     }
 }
 </script>
 
 <style>
-.active {
+.active-dropdown {
     color: var(--bs-dropdown-link-active-color);
     text-decoration: none;
     background-color: #dc3545!important

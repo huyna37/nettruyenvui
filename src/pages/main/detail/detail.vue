@@ -332,6 +332,6 @@ export default {
         debouncedHandleInput() {
             return debounce(this.handleInput, 300); // Thời gian chờ 300ms (0.3 giây)
         },
-    },
+    }
 }
 </script>

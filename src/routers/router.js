@@ -8,7 +8,7 @@ const router = createRouter({
   scrollBehavior() {
     return { top: 0 }
   },
-  linkActiveClass: 'active',
+  linkActiveClass: 'active-link',
 });
 
 router.beforeEach((to, from, next) => {
