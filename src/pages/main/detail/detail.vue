@@ -2,8 +2,11 @@
     <div class='container tw-mt-[1rem]' v-if="data">
         <section class="row">
             <div class='col-md-8 row'>
-                <div class='col-md-4 col-sm-12'>
-                    <img :src='data.coverImage' />
+                <div class='col-md-4 col-sm-12' :class="{'max-md:tw-hidden': data.showImages}">
+                    <img :src='data.coverImage' class="tw-rounded-xl tw-w-[100%]"/>
+                </div>
+                <div class='col-md-4 col-sm-12 max-md:tw-block' v-if="data.showImages">
+                    <img :src='data.showImages' class="tw-rounded-xl tw-w-[100%]"/>
                 </div>
                 <div class='col-md-8'>
                     <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ data.name }}</h4>
@@ -46,14 +49,22 @@
                 </div>
 
                 <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
-                    <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
-                        href="/the-loai/comedy">Comedy</a>
-                    <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
-                        href="/the-loai/school-life">School Life</a>
-                    <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
-                        href="/the-loai/shounen">Shounen</a>
-                    <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
-                        href="/the-loai/romance">Romance</a>
+                    <template v-if="data.genre">
+                        <a v-for="genre in genre" v-bind:key="genre"
+                            class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                            href="/">{{ genre }}</a>
+                    </template>
+                    <template v-else>
+                        <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                            href="/the-loai/comedy">Comedy</a>
+                        <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                            href="/the-loai/school-life">School Life</a>
+                        <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                            href="/the-loai/shounen">Shounen</a>
+                        <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
+                            href="/the-loai/romance">Romance</a>
+                    </template>
+
                 </div>
 
                 <div class="tw-mt-[20px] s768:tw-mt-[30px] d-flex justify-content-between">
@@ -123,16 +134,17 @@
                     class="tw-shrink-0 tw-mt-[20px] tw-s1024:mt-0 tw-s1024:w-[320px] tw-s1280:w-[354px] tw-s1024:pl-[20px] tw-s1280:pl-[34px]">
                     <h2
                         class="tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
-                        <a href="/top-tuan">Top tuần</a>
+                        <a href="/">Top tuần</a>
                     </h2>
                     <div class="tw-s480:grid tw-s480:grid-cols-2 tw-s768:grid-cols-4 tw-s1024:block tw-gap-[10px]">
                         <div class="tw-mb-4 tw-s480:mb-0 tw-s1024:mb-4" v-for="top in listMangaTop" v-bind:key="top">
                             <RouterLink :to="'/' + top.slug">
                                 <div class="tw-relative tw-rounded-xl tw-overflow-hidden">
-                                    <img class="tw-w-[auto]" :src="top.coverImage" :alt="top.name">
+                                    <img class="tw-w-[auto]" :src="top.showImage ?? top.coverImage" :alt="top.name">
                                     <div
                                         class="tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] tw-pt-[20px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
-                                        <span class="tw-text-[12px] tw-font-extralight tw-dark:text-teal-300">{{ top.views }} lượt
+                                        <span class="tw-text-[12px] tw-font-extralight tw-dark:text-teal-300">{{ top.views
+                                        }} lượt
                                             đọc</span>
                                         <h3 class="tw-font-light tw-line-clamp-1">{{ top.name }}</h3>
                                     </div>
@@ -149,8 +161,7 @@
             <h2 class="tw-w-full tw-text-orange-600 tw-mb-2 tw-uppercase">ĐỪNG BỎ LỠ</h2>
             <div
                 class="tw-flex tw-snap-x tw-snap-mandatory tw-overflow-x-auto s640:tw-grid s640:tw-grid-cols-4 tw-gap-[10px]">
-                <div
-                    v-for="dont in listmanga" v-bind:key="dont"
+                <div v-for="dont in listmanga" v-bind:key="dont"
                     class="tw-relative tw-snap-always tw-snap-start tw-shrink-0 s640:tw-w-auto s640:tw-h-auto">
                     <RouterLink :to="'/' + dont.slug">
                         <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
@@ -159,8 +170,9 @@
                                 class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">1.7K
                                 <i class="fas fa-eye"></i></span>
                         </div>
-                        <h3 class="tw-text-[14px] s360:tw-text-[16px] tw-text-left s640:tw-text-center line-clamp-2 tw-w-[10rem] tw-overflow-hidden">
-                           {{ dont.name }}</h3>
+                        <h3
+                            class="tw-text-[14px] s360:tw-text-[16px] tw-text-left s640:tw-text-center line-clamp-2 tw-w-[10rem] tw-overflow-hidden">
+                            {{ dont.name }}</h3>
                     </RouterLink>
                 </div>
             </div>
@@ -216,7 +228,7 @@ export default {
             this.listmanga = (await instance.get('/manga/?page=1&limit=5&sortField=name&sortOrder=asc')).data.result.data;
         },
         async getListMangasTop() {
-            this.listMangaTop = (await instance.get('/manga/?page=1&limit=5&sortField=views&sortOrder=asc')).data.result.data;
+            this.listMangaTop = (await instance.get('/manga/?page=1&limit=5&sortField=views&sortOrder=asc&filterOptions={"typeShow":"1"}')).data.result.data;
         },
         async getDetail() {
             this.data = (await instance.get('/manga/' + this.name)).data.result;
@@ -244,6 +256,9 @@ export default {
         debouncedHandleInput() {
             return debounce(this.handleInput, 300); // Thời gian chờ 300ms (0.3 giây)
         },
+        genre(){
+            return this.data?.genre?.split(";");
+        }
     }
 }
 </script>
