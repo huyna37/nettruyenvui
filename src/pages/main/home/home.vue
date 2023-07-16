@@ -3,7 +3,7 @@
         <section class="row">
             <RouterLink v-if="firstSession1" :to='firstSession1.slug' class='col-md-12 col-lg-6 max-md:tw-mb-[1rem]'>
                 <div class="tw-h-full tw-relative">
-                    <img class="tw-w-full tw-h-full tw-rounded-xl" :src="firstSession1.coverImage" data-id="100322"
+                    <img class="tw-w-full tw-h-full tw-rounded-xl" :src="firstSession1.showImage ?? firstSession1.coverImage" data-id="100322"
                         :alt="firstSession1.name">
                     <div
                         class="tw-rounded-xl tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
@@ -19,7 +19,7 @@
                         class="tw-relative max-md:odd:tw-mt-2 max-md:old:tw-mr-1 max-md:tw-mr-[5px] md:tw-mr-[5px] tw-h-[160px]">
                         <RouterLink :to="data2?.slug ?? '/'">
                             <div class="tw-h-full tw-relative">
-                                <img class="tw-w-full tw-h-full tw-rounded-xl" :src="data2.coverImage" data-id="100305"
+                                <img class="tw-w-full tw-h-full tw-rounded-xl" :src="data2.showImage ?? data2.coverImage" data-id="100305"
                                     :alt="data2.name">
                                 <div
                                     class="tw-absolute tw-rounded-xl tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
@@ -47,9 +47,9 @@
             <template v-else v-for="data3 in secondSession" v-bind:key="data3">
                 <RouterLink :to="data3.slug ?? '#'"
                     class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2.5rem] hover:overscroll-contain hover:tw-shadow-2xl'>
-                    <img class="tw-h-[18rem] tw-w-full tw-rounded-xl" :src="data3.coverImage" :alt="data3.name">
+                    <img class="tw-h-[auto] tw-w-full tw-rounded-xl" :src="data3.coverImage" :alt="data3.name">
                     <p
-                        class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>
+                        class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
                         {{ data3.name }}
                     </p>
                 </RouterLink>
@@ -92,9 +92,9 @@
             <template v-for="(data5) in otherManga" v-bind:key="data5">
                 <RouterLink :to="data5.slug"
                     class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2.5rem] hover:overscroll-contain hover:tw-shadow-2xl'>
-                    <img class="tw-h-[18rem] tw-w-full tw-rounded-xl" :src="data5.coverImage" :alt="data5.name">
+                    <img class="tw-h-[auto] tw-w-full tw-rounded-xl" :src="data5.coverImage" :alt="data5.name">
                     <p
-                        class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>
+                        class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
                         {{ data5.name }}
                     </p>
                 </RouterLink>

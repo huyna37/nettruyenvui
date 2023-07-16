@@ -13,7 +13,7 @@ export const routerMain = {
       component: Home,
       name: "home",
       meta: {
-        title: "NetTruyenVui Chuyên Vui Truyện Cùng Ae",
+        title: "Truyện Anime siêu hot",
         icon: "fa-solid fa-home text-success",
         affix: true,
       },
@@ -23,7 +23,7 @@ export const routerMain = {
       component: Detail,
       name: "detail",
       meta: {
-        title: "NetTruyenVui Chuyên Vui Truyện Cùng Ae",
+        title: "Anime",
         icon: "fa-solid fa-home text-success",
         affix: true,
       },

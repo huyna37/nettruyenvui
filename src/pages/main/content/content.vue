@@ -58,6 +58,11 @@
         </section>
 
         <main class='row tw-mt-[20px] tw-text-center d-flex justify-content-center'>
+            <template v-if="!visibleFiles || visibleFiles.length === 0">
+                <div class="alert alert-primary tw-mt-3" role="alert">
+                  Chapter Đang updating...
+                </div>
+            </template>
             <template v-for="(img, index) in visibleFiles" :key="index">
                 <img class="tw-w-[auto]"
                     :src="`https://crawler.meoden.online/files?folder=${this.manga.name}/${this.chapter}&name=` + img" />
@@ -108,56 +113,16 @@
         <section class="tw-mt-[1rem] row">
             <h2
                 class="tw-color-[red] tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
-                <a href="/chap-moi-nhat">CHƯƠNG MỚI NHẤT</a>
+                <div>CHƯƠNG MỚI NHẤT</div>
             </h2>
-            <div
+            <RouterLink :to="'/' + manga2.slug"
+            v-for="manga2 in listmanga" v-bind:key="manga2"
                 class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
                 <img class="tw-w-full tw-h-full "
-                    src="https://s199.imacdn.com/tt24/2023/05/22/09aaa9a31f48e194_c0a61ea6ac655552_3231716847250452185710.jpg"
-                    data-id="178109" alt="Shounen No Abyss chap 140">
-                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
+                :src="manga2.coverImage" :alt="manga2.name">
+                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>{{ manga2.name }}
                 </p>
-            </div>
-            <div
-                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
-                <img class="tw-w-full tw-h-full"
-                    src="https://s199.imacdn.com/tt24/2023/06/19/e402905856eb9e11_bf79058b6e476049_3687316871699546185710.jpg"
-                    data-id="178109" alt="Shounen No Abyss chap 140">
-                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
-                </p>
-            </div>
-            <div
-                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
-                <img class="tw-w-full tw-h-full"
-                    src="https://s199.imacdn.com/tt24/2023/02/28/6a2d2e29189f633a_c2fddbc8ed1f30ae_38529167759767669674.jpg"
-                    data-id="178109" alt="Shounen No Abyss chap 140">
-                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
-                </p>
-            </div>
-            <div
-                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
-                <img class="tw-w-full tw-h-full"
-                    src="https://s200.imacdn.com/tt24/2020/05/13/34d6d47a9a9b1549_e63854c61da6231c_514181589331148745957.jpg"
-                    data-id="178109" alt="Shounen No Abyss chap 140">
-                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
-                </p>
-            </div>
-            <div
-                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
-                <img class="tw-w-full tw-h-full"
-                    src="https://s199.imacdn.com/tt24/2023/01/03/9f5bf2f4e9b2d3ae_3555242d7b4177b5_40402167273074159674.jpg"
-                    data-id="178109" alt="Shounen No Abyss chap 140">
-                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
-                </p>
-            </div>
-            <div
-                class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
-                <img class="tw-w-full tw-h-full"
-                    src="https://s199.imacdn.com/tt24/2023/06/02/b868213fc2e3ad7e_6c0723940e426a49_4212016856983948185710.jpg"
-                    data-id="178109" alt="Shounen No Abyss chap 140">
-                <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>Shounen No Abyss
-                </p>
-            </div>
+            </RouterLink>
         </section>
 
     </div>
@@ -188,17 +153,24 @@ export default {
             visibleFiles: [],
             manga: {},
             listChapter: [],
-            currentChapter: 0
+            currentChapter: 0,
+            listmanga: []
         }
     },
     async created() {
         await this.getManga();
         await this.getContentByName();
-        this.renderFiles();
+        if(this.data.files.length > 0) {
+            this.renderFiles();
+        }
         await this.getNewstChapter();
         this.getCurrentChapter();
+        await this.getListMangas();
     },
     methods: {
+        async getListMangas() {
+            this.listmanga = (await instance.get('/manga/?page=1&limit=6&sortField=updatedAt&sortOrder=desc')).data.result.data;
+        },
         getCurrentChapter() {
             const regex = /(\d+(\.\d+)?)/;
             const matches = this.chapter.match(regex);
