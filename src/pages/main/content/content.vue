@@ -12,10 +12,10 @@
         <section class="row">
             <div class='col-md-8 row max-md:tw-mb-2'>
                 <div class='col-md-4 col-sm-12' :class="{ 'max-md:tw-hidden': manga.showImage }">
-                    <img :src='manga.coverImage' class="tw-rounded-xl tw-w-[100%]" />
+                    <img :src="`https://crawler.meoden.online/manga/${manga._id}/coverImage`" class="tw-rounded-xl tw-w-[100%]" />
                 </div>
                 <div class='col-md-4 col-sm-12 tw-hidden max-md:tw-block'>
-                    <img :src='manga.showImage' class="tw-rounded-xl tw-w-[100%]" />
+                    <img :src="`https://crawler.meoden.online/manga/${manga._id}/showImage`" class="tw-rounded-xl tw-w-[100%]" />
                 </div>
                 <div class='col-md-8'>
                     <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ manga.name }}</h4>
@@ -118,7 +118,7 @@
             </h2>
             <RouterLink :to="'/' + manga2.slug" v-for="manga2 in listmanga" v-bind:key="manga2"
                 class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
-                <img class="tw-w-full tw-h-full " :src="manga2.coverImage" :alt="manga2.name">
+                <img class="tw-w-full tw-h-full " :src="`https://crawler.meoden.online/manga/${manga2._id}/coverImage`" :alt="manga2.name">
                 <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>{{ manga2.name }}
                 </p>
             </RouterLink>
@@ -158,6 +158,7 @@ export default {
         }
     },
     async created() {
+        store.dispatch('app/setIsLoading', true);
         await this.getManga();
         await this.getChapterInfo();
         await this.getContentByName();
@@ -167,6 +168,7 @@ export default {
         await this.getNewstChapter();
         this.getCurrentChapter();
         await this.getListMangas();
+        store.dispatch('app/setIsLoading', false);
     },
     methods: {
         async getListMangas() {

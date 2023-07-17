@@ -1,37 +1,77 @@
 <template>
     <div class='container tw-mt-[1rem]'>
         <section class="row">
-            <RouterLink v-if="firstSession1" :to='firstSession1.slug' class='col-md-12 col-lg-6 max-md:tw-mb-[1rem]'>
+            <template v-if="mangaSpecial">
+                <RouterLink :to='mangaSpecial.slug' class='col-md-12 col-lg-6 max-md:tw-mb-[1rem]'>
+                    <div class="tw-h-full tw-relative">
+                        <img class="tw-w-full tw-h-full tw-rounded-xl"
+                            :src="`https://crawler.meoden.online/manga/${mangaSpecial._id}/showImage`" data-id="100322"
+                            :alt="mangaSpecial.name">
+                        <div
+                            class="tw-rounded-xl tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
+                            <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">{{ mangaSpecial.views }}
+                                lượt
+                                đọc</span>
+                            <h2 class="tw-font-light">{{ mangaSpecial.name }}</h2>
+                        </div>
+                    </div>
+                </RouterLink>
+            </template>
+
+            <div v-else class='col-md-12 col-lg-6 max-md:tw-mb-[1rem]'>
                 <div class="tw-h-full tw-relative">
-                    <img class="tw-w-full tw-h-full tw-rounded-xl" :src="firstSession1.showImage ?? firstSession1.coverImage" data-id="100322"
-                        :alt="firstSession1.name">
+                    <img class="tw-w-full tw-h-full tw-rounded-xl tw-h-[20rem]" src="#" data-id="100322">
                     <div
                         class="tw-rounded-xl tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
-                        <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">{{ firstSession1.views }} lượt
+                        <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">0 lượt
                             đọc</span>
-                        <h2 class="tw-font-light">{{ firstSession1.name }}</h2>
+                        <h2 class="tw-font-light">...</h2>
                     </div>
                 </div>
-            </RouterLink>
+            </div>
             <div class='col-md-12 col-lg-6 tw-flex tw-flex-wrap max-lg:tw-mt-[0.1rem]'>
-                <div class='col-md-6 col-6' v-for="(data2, index) in firstSession" v-bind:key="index">
-                    <div :class="{ '[&:nth-child(1)]:tw-mb-2 [&:nth-child(1)]:tw-mr-2': index == 0, '[&:nth-child(2)]:tw-mb-2 [&:nth-child(4)]:tw-mr-2': index == 2 }"
-                        class="tw-relative max-md:odd:tw-mt-2 max-md:old:tw-mr-1 max-md:tw-mr-[5px] md:tw-mr-[5px] tw-h-[160px]">
-                        <RouterLink :to="data2?.slug ?? '/'">
-                            <div class="tw-h-full tw-relative">
-                                <img class="tw-w-full tw-h-full tw-rounded-xl" :src="data2.showImage ?? data2.coverImage" data-id="100305"
-                                    :alt="data2.name">
-                                <div
-                                    class="tw-absolute tw-rounded-xl tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
-                                    <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">1,371,610 lượt
-                                        đọc</span>
-                                    <h2 class="tw-font-light max-md:tw-text-[12px]">{{ data2.name }}
-                                    </h2>
+                <template v-if="manga1expect && manga1expect.length > 0">
+                    <div class='col-md-6 col-6' v-for="(data2, index) in manga1expect" v-bind:key="index">
+                        <div :class="{ '[&:nth-child(1)]:tw-mb-2 [&:nth-child(1)]:tw-mr-2': index == 0, '[&:nth-child(2)]:tw-mb-2 [&:nth-child(4)]:tw-mr-2': index == 2 }"
+                            class="tw-relative max-md:odd:tw-mt-2 max-md:old:tw-mr-1 max-md:tw-mr-[5px] md:tw-mr-[5px] tw-h-[160px]">
+                            <RouterLink :to="data2?.slug ?? '/'">
+                                <div class="tw-h-full tw-relative">
+                                    <img class="tw-w-full tw-h-full tw-rounded-xl"
+                                        :src="`https://crawler.meoden.online/manga/${data2._id}/showImage`" data-id="100305"
+                                        :alt="data2.name">
+                                    <div
+                                        class="tw-absolute tw-rounded-xl tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
+                                        <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">1,371,610 lượt
+                                            đọc</span>
+                                        <h2 class="tw-font-light max-md:tw-text-[12px]">{{ data2.name }}
+                                        </h2>
+                                    </div>
                                 </div>
-                            </div>
-                        </RouterLink>
+                            </RouterLink>
+                        </div>
                     </div>
-                </div>
+                </template>
+                <template v-else>
+                    <div class='col-md-6 col-6 tw-relative tw-rounded-xl' v-for="index in 4" v-bind:key="index">
+                        <div :class="{ '[&:nth-child(1)]:tw-mb-2 [&:nth-child(1)]:tw-mr-2': index == 0, '[&:nth-child(2)]:tw-mb-2 [&:nth-child(4)]:tw-mr-2': index == 2 }"
+                            class="tw-relative max-md:odd:tw-mt-2 max-md:old:tw-mr-1 max-md:tw-mr-[5px] md:tw-mr-[5px] tw-h-[160px] tw-rounded-xl">
+                            <RouterLink :to="'/'">
+                                <div class="tw-h-full tw-relative">
+                                    <img>
+                                    <div
+                                        class="tw-absolute tw-rounded-xl tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
+                                        <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">1,371,610 lượt
+                                            đọc</span>
+                                        <h2 class="tw-font-light max-md:tw-text-[12px]">
+                                        </h2>
+                                    </div>
+                                </div>
+                            </RouterLink>
+                        </div>
+                    </div>
+                </template>
+
+
             </div>
         </section>
 
@@ -41,15 +81,22 @@
                 class="tw-color-[red] tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
                 <a href="/chap-moi-nhat">CHƯƠNG MỚI NHẤT</a>
             </h2>
-            <template v-if="!secondSession">
-
+            <template v-if="!getMangas1 && getMangas1.length == 0">
+                <RouterLink to='#' v-for="i in 6" v-bind:key="i"
+                    class='tw-relative col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2.5rem] hover:overscroll-contain hover:tw-shadow-2xl'>
+                    <img class="tw-h-[198px] tw-rounded-xl">
+                    <i class="fa-solid fa-spinner tw-absolute tw-top-[12%] tw-right-[20%] tw-text-[9rem] tw-text-[blanchedalmond] tw-animate-spin"></i>
+                    <p class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
+                        ...
+                    </p>
+                </RouterLink>
             </template>
-            <template v-else v-for="data3 in secondSession" v-bind:key="data3">
-                <RouterLink :to="data3.slug ?? '#'"
+            <template v-else>
+                <RouterLink v-for="data3 in mangas2" v-bind:key="data3" :to="data3.slug ?? '#'"
                     class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2.5rem] hover:overscroll-contain hover:tw-shadow-2xl'>
-                    <img class="tw-h-[auto] tw-w-full tw-rounded-xl" :src="data3.coverImage" :alt="data3.name">
-                    <p
-                        class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
+                    <img class="tw-h-[auto] tw-w-full tw-rounded-xl"
+                        :src="`https://crawler.meoden.online/manga/${data3._id}/coverImage`" :alt="data3.name">
+                    <p class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
                         {{ data3.name }}
                     </p>
                 </RouterLink>
@@ -57,7 +104,7 @@
 
         </section>
 
-        <div v-if="thirdSession"
+        <div
             class="tw-rounded-lg tw-mt-[1rem] max-lg:tw-mt-0 row tw-bg-violet-900/80 dark:tw-bg-orange-600/80 tw-max-h-[220px]">
             <section class="tw-px-[10px] tw-py-[10px] s768:tw-py-[10px]">
                 <h2 class="tw-w-full tw-text-white tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
@@ -65,12 +112,12 @@
                 </h2>
                 <div
                     class="tw-flex tw-snap-x tw-snap-mandatory tw-overflow-y-auto tw-scrollbar-none s640:tw-grid s640:tw-grid-cols-4 tw-gap-[10px]">
-                    <div v-for="(data4) in thirdSession" v-bind:key="data4"
+                    <div v-for="(data4) in mangas3" v-bind:key="data4"
                         class="tw-relative tw-snap-always tw-snap-start tw-shrink-0 tw-w-[290px] s640:tw-w-auto s640:tw-h-auto">
                         <RouterLink :to="data4.slug">
                             <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
-                                <img class="tw-w-full tw-h-full" :src="data4.showImage ?? data4.coverImage"
-                                    :alt="data4.name">
+                                <img class="tw-w-full tw-h-full"
+                                    :src="`https://crawler.meoden.online/manga/${data4._id}/showImage`" :alt="data4.name">
                                 <span
                                     class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-violet-900/80 dark:tw-bg-teal-900/80 tw-text-white tw-text-[12px] tw-font-light">258.9K
                                     <i class="fas fa-eye"></i></span>
@@ -89,12 +136,12 @@
                 class="tw-color-[red] tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
                 <a href="/chap-moi-nhat">Những Truyện Bạn có thể thích</a>
             </h2>
-            <template v-for="(data5) in otherManga" v-bind:key="data5">
+            <template v-for="(data5) in mangas4" v-bind:key="data5">
                 <RouterLink :to="data5.slug"
                     class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2.5rem] hover:overscroll-contain hover:tw-shadow-2xl'>
-                    <img class="tw-h-[auto] tw-w-full tw-rounded-xl" :src="data5.coverImage" :alt="data5.name">
-                    <p
-                        class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
+                    <img class="tw-h-[auto] tw-w-full tw-rounded-xl"
+                        :src="`https://crawler.meoden.online/manga/${data5._id}/coverImage`" :alt="data5.name">
+                    <p class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
                         {{ data5.name }}
                     </p>
                 </RouterLink>
@@ -111,43 +158,48 @@ export default {
     name: "home-main",
     data() {
         return {
-            data: []
+            mangas1: [],
+            mangas2: [],
+            mangas3: [],
+            mangas4: [],
+
         }
     },
     async created() {
-        await this.getMangas();
+        await this.getMangas1();
+        await this.getMangas2();
+        await this.getMangas3();
+        await this.getMangas4();
     },
     methods: {
-        async getMangas() {
-            this.data = (await instance.get('/manga/?sortField=updatedAt&sortOrder=desc')).data.result.data;
+        async getMangas1() {
+            this.mangas1 = (await instance.get('/manga/?page=1&limit=5&filterOptions={"typeShow":{"$in":["1","1-special"]}}&sortField=updatedAt&sortOrder=desc')).data.result.data;
+        },
+        async getMangas2() {
+            this.mangas2 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "Action", $options: "i"}&sortField=updatedAt&sortOrder=desc')).data.result.data;
+        },
+        async getMangas3() {
+            this.mangas3 = (await instance.get('/manga/?page=1&limit=8&filterOptions={"genre": { $regex: "Adventure", $options: "i"}&sortField=updatedAt&sortOrder=desc')).data.result.data;
+        },
+        async getMangas4() {
+            this.mangas4 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "Fantasy", $options: "i"}&sortField=updatedAt&sortOrder=desc')).data.result.data;
+        },
+        async getImageById(id, typeImg) {
+            return (await instance.get(`/manga/${id}/${typeImg}`))
         }
     },
     computed: {
-        firstSession() {
-            return this.data.filter(x => {
-                return x.typeShow == '1';
-            });
-        },
-        firstSession1() {
-            return this.data.filter(x => {
+        mangaSpecial() {
+            return this.mangas1.filter(x => {
                 return x.typeShow == '1-special';
             })[0];
         },
-        secondSession() {
-            return this.data.filter(x => {
-                return x.typeShow == '2' && !x.urlMovie;
+        manga1expect() {
+            if (!this.mangas1) return [];
+            return this.mangas1.filter(x => {
+                return x.typeShow != '1-special';
             });
         },
-        thirdSession() {
-            return this.data.filter(x => {
-                return x.urlMovie;
-            });
-        },
-        otherManga() {
-            return this.data.filter(x => {
-                return x.typeShow == 'other';
-            });
-        }
     }
 
 }
