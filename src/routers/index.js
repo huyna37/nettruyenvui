@@ -51,5 +51,9 @@ export const routerMain = {
   ],
 };
 
+export const exceptionPage = {
+  path: '/:pathMatch(.*)*', component: Home
+}
 
-export const routes = [routerMain];
+
+export const routes = [routerMain, exceptionPage];

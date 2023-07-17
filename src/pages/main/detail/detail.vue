@@ -2,11 +2,11 @@
     <div class='container tw-mt-[1rem]' v-if="data">
         <section class="row">
             <div class='col-md-8 row'>
-                <div class='col-md-4 col-sm-12' :class="{'max-md:tw-hidden': data.showImages}">
-                    <img :src='data.coverImage' class="tw-rounded-xl tw-w-[100%]"/>
+                <div class='col-md-4 col-sm-12' :class="{ 'max-md:tw-hidden': data.showImage }">
+                    <img :src='data.coverImage' class="tw-rounded-xl tw-w-[100%]" />
                 </div>
-                <div class='col-md-4 col-sm-12 max-md:tw-block' v-if="data.showImages">
-                    <img :src='data.showImages' class="tw-rounded-xl tw-w-[100%]"/>
+                <div class='col-md-4 col-sm-12 tw-hidden max-md:tw-block'>
+                    <img :src='data.showImage' class="tw-rounded-xl tw-w-[100%]" />
                 </div>
                 <div class='col-md-8'>
                     <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ data.name }}</h4>
@@ -51,8 +51,8 @@
                 <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
                     <template v-if="data.genre">
                         <a v-for="genre in genre" v-bind:key="genre"
-                            class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
-                            href="/">{{ genre }}</a>
+                            class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1" href="/">{{
+                                genre }}</a>
                     </template>
                     <template v-else>
                         <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
@@ -178,6 +178,12 @@
             </div>
         </section>
     </div>
+    <div v-else>
+        <div class="alert alert-warning tw-mt-[1rem] text-center" role="alert">
+            <p>Không tìm thấy truyện phù hợp</p>
+            <RouterLink to="/" class="btn">Back To Home</RouterLink>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -236,7 +242,7 @@ export default {
         async getListChapter(filterBy) {
             let url = `/chapter/?page=${this.currentPage}&index=10&sortField=number&sortOrder=desc&filterOptions={"manga":"${this.data._id}"}`;
             if (filterBy) {
-                url = `/chapter/?page=${this.currentPage}&index=10&sortField=number&sortOrder=desc&filterOptions={"manga":"${this.data._id}", "title": "${filterBy}"}`;
+                url = `/chapter/?page=${this.currentPage}&index=10&sortField=number&sortOrder=desc&filterOptions={"manga":"${this.data._id}"}&filter={"title": "${filterBy}"}`;
             }
             return (await instance.get(url)).data.result;
         },
@@ -256,7 +262,7 @@ export default {
         debouncedHandleInput() {
             return debounce(this.handleInput, 300); // Thời gian chờ 300ms (0.3 giây)
         },
-        genre(){
+        genre() {
             return this.data?.genre?.split(";");
         }
     }

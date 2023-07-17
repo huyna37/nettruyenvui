@@ -11,8 +11,11 @@
         </section>
         <section class="row">
             <div class='col-md-8 row max-md:tw-mb-2'>
-                <div class='col-md-4'>
-                    <img :src='manga.coverImage' />
+                <div class='col-md-4 col-sm-12' :class="{ 'max-md:tw-hidden': manga.showImage }">
+                    <img :src='manga.coverImage' class="tw-rounded-xl tw-w-[100%]" />
+                </div>
+                <div class='col-md-4 col-sm-12 tw-hidden max-md:tw-block'>
+                    <img :src='manga.showImage' class="tw-rounded-xl tw-w-[100%]" />
                 </div>
                 <div class='col-md-8'>
                     <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ manga.name }}</h4>
@@ -50,7 +53,7 @@
             </div>
             <div class='col-md-4'>
                 <div class="tw-uppercase tw-text-orange-600">Nội dung</div>
-                <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
+                <div class="tw-mt-[10px] tw-text-[15px] tw-font-light tw-max-h-[18rem] tw-overflow-auto">
                     {{ manga.description }}
                 </div>
 
@@ -60,12 +63,11 @@
         <main class='row tw-mt-[20px] tw-text-center d-flex justify-content-center'>
             <template v-if="!visibleFiles || visibleFiles.length === 0">
                 <div class="alert alert-primary tw-mt-3" role="alert">
-                  Chapter Đang updating...
+                    Chapter Đang updating...
                 </div>
             </template>
             <template v-for="(img, index) in visibleFiles" :key="index">
-                <img class="tw-w-[auto]"
-                    :src="`https://crawler.meoden.online/files?folder=${this.manga.name}/${this.chapter}&name=` + img" />
+                <img class="tw-w-[auto]" :src="`https://crawler.meoden.online/image/${img._id}`" />
             </template>
             <div
                 class="tw-fixed tw-bottom-[10px] tw-left-0 tw-right-0 tw-w-[300px] tw-bg-black/50 tw-rounded-2xl tw-py-[10px] tw-mx-auto tw-flex tw-justify-center tw-gap-[10px] tw-z-50">
@@ -87,8 +89,7 @@
                         </div>
                         <ul class="dropdown-menu tw-overflow-auto tw-h-[15rem] tw-pt-0 tw-mb-[7px]">
                             <li v-for="chapter in listChapter" v-bind:key="chapter">
-                                <RouterLink
-                                    :class="{'active-dropdown':chapter?.number == currentChapter}"
+                                <RouterLink :class="{ 'active-dropdown': chapter?.number == currentChapter }"
                                     class="tw-block tw-h-[2rem] tw-bg-yellow-600 tw-text-white tw-text-center dropdown-item"
                                     :to="`/${this.name}/chap-${chapter?.number}`">
                                     {{ chapter.title }}
@@ -115,11 +116,9 @@
                 class="tw-color-[red] tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
                 <div>CHƯƠNG MỚI NHẤT</div>
             </h2>
-            <RouterLink :to="'/' + manga2.slug"
-            v-for="manga2 in listmanga" v-bind:key="manga2"
+            <RouterLink :to="'/' + manga2.slug" v-for="manga2 in listmanga" v-bind:key="manga2"
                 class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2rem] hover:overscroll-contain hover:tw-shadow-2xl tw-rounded-xl'>
-                <img class="tw-w-full tw-h-full "
-                :src="manga2.coverImage" :alt="manga2.name">
+                <img class="tw-w-full tw-h-full " :src="manga2.coverImage" :alt="manga2.name">
                 <p class='tw-text-slate-800 tw-text-center tw-mt-1 max-sm:tw-text-[11px] tw-text-[13px]'>{{ manga2.name }}
                 </p>
             </RouterLink>
@@ -140,7 +139,7 @@ export default {
         let name = route.params.name;
         let chapter = route.params.chapter;
 
-        
+
         return {
             name,
             chapter,
@@ -154,13 +153,15 @@ export default {
             manga: {},
             listChapter: [],
             currentChapter: 0,
-            listmanga: []
+            listmanga: [],
+            chapterInfo: {}
         }
     },
     async created() {
         await this.getManga();
+        await this.getChapterInfo();
         await this.getContentByName();
-        if(this.data.files.length > 0) {
+        if (this.data.length > 0) {
             this.renderFiles();
         }
         await this.getNewstChapter();
@@ -184,12 +185,15 @@ export default {
         async getManga() {
             this.manga = (await instance.get('/manga/' + this.name)).data.result;
         },
+        async getChapterInfo() {
+            this.chapterInfo = (await instance.get(`/chapter/${this.chapter}/${this.manga._id}`)).data.result;
+        },
         async getContentByName() {
-            try{
-                this.data = (await instance.get(`/files/getListFiles?folder=${this.manga.name}/${this.chapter}`)).data;
+            try {
+                this.data = (await instance.get(`/image/getChapterByImage/${this.chapterInfo._id}`)).data.result;
             }
-            catch(e){
-                this.data = [];
+            catch (e) {
+                console.log(e)
             }
         },
         onImageLoad() {
@@ -197,10 +201,10 @@ export default {
         },
         renderFiles() {
             const numVisibleFiles = 7; // Số phần tử hiển thị ban đầu
-            if(!this.data) return;
-            this.visibleFiles = this.data.files.slice(0, numVisibleFiles);
+            if (!this.data) return;
+            this.visibleFiles = this.data.slice(0, numVisibleFiles);
 
-            const remainingFiles = this.data.files.slice(numVisibleFiles);
+            const remainingFiles = this.data.slice(numVisibleFiles);
             if (remainingFiles.length > 0) {
                 // Tạo delay 1 giây để load phần tử còn lại
                 setTimeout(() => {
@@ -213,7 +217,7 @@ export default {
         prePage() {
             let page = '#';
             this.listChapter.forEach((chapter, index) => {
-                if(chapter.number === this.currentChapter && this.listChapter[index]?.number &&  this.listChapter[index + 1]?.number) {
+                if (chapter.number === this.currentChapter && this.listChapter[index]?.number && this.listChapter[index + 1]?.number) {
                     page = `/${this.name}/chap-${this.listChapter[index + 1].number}`;
                 }
             })
@@ -222,7 +226,7 @@ export default {
         nextPage() {
             let page = '#';
             this.listChapter.forEach((chapter, index) => {
-                if(chapter.number === this.currentChapter && this.listChapter[index]?.number && this.listChapter[index - 1]?.number) {
+                if (chapter.number === this.currentChapter && this.listChapter[index]?.number && this.listChapter[index - 1]?.number) {
                     page = `/${this.name}/chap-${this.listChapter[index - 1].number}`;
                 }
             })
@@ -232,13 +236,17 @@ export default {
             return this.listChapter[0]?.number;
         }
     },
-    watch: {
-        'route.params.chapter': function(data) {
-            if(data) {
-                this.chapter = data;
-                this.getCurrentChapter();
-            }
+    async beforeRouteUpdate(to, from, next) {
+        this.chapter = to.params.chapter;
+        await this.getChapterInfo();
+        await this.getContentByName();
+        if (this.data.length > 0) {
+            this.renderFiles();
         }
+        this.getCurrentChapter();
+
+        // Tiếp tục điều hướng
+        next();
     }
 }
 </script>
@@ -247,6 +255,6 @@ export default {
 .active-dropdown {
     color: var(--bs-dropdown-link-active-color);
     text-decoration: none;
-    background-color: #dc3545!important
+    background-color: #dc3545 !important
 }
 </style>
