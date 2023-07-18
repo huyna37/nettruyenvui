@@ -48,8 +48,10 @@ export default {
     setup() {
         const route = useRoute();
         const name = route.params.name;
+        const category = route.params.category;
         return {
             name,
+            category,
             route
         };
     },
@@ -62,18 +64,41 @@ export default {
             await this.getMangas();
         },
         async getMangas() {
-            const result = (await instance.get(`/manga/?page=${this.pageIndex}&limit=${this.limit}&sortField=updatedAt&sortOrder=desc&filter={"name":"${this.name}"}`)).data.result;
-            this.data = result.data;
-            if (this.data.length === 1) {
-                const manga = this.data[0];
-                this.$router.push(`/${manga.slug}`)
-            }
+            try {
+                let query = {
+                    page: this.pageIndex,
+                    limit: this.limit,
+                    sortField: 'updatedAt',
+                    sortOrder: 'desc'
+                }
+                if (this.category) {
+                    query.filterOptions = JSON.stringify({ "genre": { $regex: `\\b${this.category}\\b`, $options: 'i' } });
+                }
+                if(this.name ) {
+                    query.filter = JSON.stringify({ name: this.name })
+                }
+                const response = await instance.get(`/manga/`, {
+                    params: query
+                });
+                const result = response.data.result;
+                this.data = result.data;
 
-            this.totalPages = result.totalPages;
+                if (this.data.length === 1) {
+                    const manga = this.data[0];
+                    this.$router.push(`/${manga.slug}`);
+                }
+
+                this.totalPages = result.totalPages;
+            } catch (error) {
+                // Xử lý lỗi ở đây nếu cần thiết
+                console.error(error);
+            }
         }
+
     },
     beforeRouteUpdate(to, from, next) {
         this.name = to.params.name;
+        this.category = to.params.category;
         // Thực hiện các tác vụ tải lại component hoặc khởi tạo lại dữ liệu
         this.getMangas(); // Ví dụ: Gọi phương thức loadData để tải lại dữ liệu
 

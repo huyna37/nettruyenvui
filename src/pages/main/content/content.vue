@@ -30,7 +30,7 @@
                     </div>
                     <div class="tw-mb-2 tw-text-[14px]">
                         <label class="tw-w-[100px] tw-inline-block">Mới nhất</label>
-                        <span><a class="tw-text-orange-600" href="/horimiya/chap-122.8">chap 122</a></span>
+                        <span><RouterLink class="tw-text-orange-600" :to="newestPage?.slug ?? '/'">{{ newestPage?.title }}</RouterLink></span>
                     </div>
                     <div class="mb-2 text-[14px]">
                         <label class="tw-w-[100px] tw-inline-block">Lượt đọc</label>
@@ -235,7 +235,7 @@ export default {
             return page;
         },
         newestPage() {
-            return this.listChapter[0]?.number;
+            return this.listChapter[0];
         }
     },
     async beforeRouteUpdate(to, from, next) {

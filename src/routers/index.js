@@ -48,6 +48,16 @@ export const routerMain = {
         affix: true,
       },
     },
+    {
+      path: "the-loai/:category?",
+      component: List,
+      name: "list",
+      meta: {
+        title: "NetTruyenVui Chuyên Vui Truyện Cùng Ae",
+        icon: "fa-solid fa-home text-success",
+        affix: true,
+      },
+    },
   ],
 };
 

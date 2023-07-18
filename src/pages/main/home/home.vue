@@ -41,7 +41,7 @@
                                         :alt="data2.name">
                                     <div
                                         class="tw-absolute tw-rounded-xl tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
-                                        <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">1,371,610 lượt
+                                        <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">{{ data2.views }} lượt
                                             đọc</span>
                                         <h2 class="tw-font-light max-md:tw-text-[12px]">{{ data2.name }}
                                         </h2>
@@ -85,7 +85,8 @@
                 <RouterLink to='#' v-for="i in 6" v-bind:key="i"
                     class='tw-relative col-lg-2 col-md-3 col-4 max-lg:tw-mb-[2.5rem] hover:overscroll-contain hover:tw-shadow-2xl'>
                     <img class="tw-h-[198px] tw-rounded-xl">
-                    <i class="fa-solid fa-spinner tw-absolute tw-top-[12%] tw-right-[20%] tw-text-[9rem] tw-text-[blanchedalmond] tw-animate-spin"></i>
+                    <i
+                        class="fa-solid fa-spinner tw-absolute tw-top-[12%] tw-right-[20%] tw-text-[9rem] tw-text-[blanchedalmond] tw-animate-spin"></i>
                     <p class='tw-text-slate-800 tw-h-[37px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
                         ...
                     </p>
@@ -179,10 +180,18 @@ export default {
             this.mangas2 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "Action", $options: "i"}&sortField=updatedAt&sortOrder=desc')).data.result.data;
         },
         async getMangas3() {
-            this.mangas3 = (await instance.get('/manga/?page=1&limit=8&filterOptions={"genre": { $regex: "Adventure", $options: "i"}&sortField=updatedAt&sortOrder=desc')).data.result.data;
+            this.mangas3 = (await instance.get('/manga/?page=1&limit=8&sortField=name&sortOrder=desc')).data.result.data;
         },
         async getMangas4() {
-            this.mangas4 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "Fantasy", $options: "i"}&sortField=updatedAt&sortOrder=desc')).data.result.data;
+            // Chuẩn bị truy vấn tìm kiếm
+            const query = {
+                page: 1,
+                limit: 12,
+                sortField: "views",
+                sortOrder: "desc",
+            };
+            const url = '/manga/?' + new URLSearchParams(query);
+            this.mangas4 = (await instance.get(url)).data.result.data;
         },
         async getImageById(id, typeImg) {
             return (await instance.get(`/manga/${id}/${typeImg}`))
