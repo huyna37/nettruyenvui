@@ -14,10 +14,10 @@
           <li class="nav-item">
             <RouterLink class="nav-link active" aria-current="page" to="/danh-sach">Danh Sách</RouterLink>
           </li>
-          <li class="nav-item tw-relative list-category">
+          <li class="nav-item tw-relative list-category tw-cursor-pointer">
             <span class="nav-link">Thể Loại</span>
             <div
-              class="menu-category tw-absolute tw-bg-slate-50 tw-z-[2] tw-p-[15px] tw-rounded-lg tw-w-[25rem] tw-left-[15%]">
+              class="menu-category tw-absolute tw-z-[2] tw-p-[15px] tw-rounded-lg tw-w-[25rem] tw-left-[15%]">
               <ul
                 class="tw-navbar-item-sub tw-overflow-hidden tw-mt-[10px] tw-ml-[32px] dark:tw-shadow-slate-700 dark:md:tw-shadow dark:md:tw-shadow-slate-700 md:tw-text-[13px] md:tw-font-light md:tw-ml-0 md:tw-p-[10px] md:tw-rounded-bl-2xl md:tw-rounded-br-2xl md:tw-bg-white md:tw-w-full md:tw-shadow-lg md:tw-absolute tw-bg-white dark:tw-bg-slate-800 tw-text-[14px] md:tw-flex md:tw-gap-2 lg:tw-gap-8 lg:tw-text-[14px] md:h-0 md:tw-transition-all md:tw-duration-300 md:tw-text-black dark:md:tw-text-teal-600">
                 <div
