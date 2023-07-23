@@ -26,7 +26,7 @@
                     </div>
                     <div class="tw-mb-2 tw-text-[14px]">
                         <label class="tw-w-[100px] tw-inline-block">Tình trạng</label>
-                        <span>đang cập nhật</span>
+                        <span>Đang cập nhật</span>
                     </div>
                     <div class="tw-mb-2 tw-text-[14px]">
                         <label class="tw-w-[100px] tw-inline-block">Mới nhất</label>
@@ -59,11 +59,11 @@
 
             </div>
         </section>
-
+        <hr/>
         <main class='row tw-mt-[20px] tw-text-center d-flex justify-content-center'>
             <template v-if="!visibleFiles || visibleFiles.length === 0">
                 <div class="alert alert-primary tw-mt-3" role="alert">
-                    Chapter Đang updating...
+                    Loading...
                 </div>
             </template>
             <template v-for="(img, index) in visibleFiles" :key="index">
@@ -87,7 +87,7 @@
                         <div
                             class="tw-select-option tw-option-2 tw-absolute tw-bottom-0 tw-left-0 tw-w-[120px] tw-min-h-[31px] tw-max-h-[300px] tw-divide-y tw-rounded-lg tw-bg-teal-600 tw-text-white tw-shadow tw-hidden">
                         </div>
-                        <ul class="dropdown-menu tw-overflow-auto tw-h-[15rem] tw-pt-0 tw-mb-[7px]">
+                        <ul class="dropdown-menu tw-overflow-auto tw-max-h-[15rem] tw-pt-0 tw-mb-[7px]">
                             <li v-for="chapter in listChapter" v-bind:key="chapter">
                                 <RouterLink :class="{ 'active-dropdown': chapter?.number == currentChapter }"
                                     class="tw-block tw-h-[2rem] tw-bg-yellow-600 tw-text-white tw-text-center dropdown-item"
@@ -165,14 +165,14 @@ export default {
         if (this.data.length > 0) {
             this.renderFiles();
         }
-        await this.getNewstChapter();
+        document.title = `${this.manga.name} - ${this.chapterInfo.title}`;
+        await Promise.all([this.getNewstChapter(), this.getListMangas()])
         this.getCurrentChapter();
-        await this.getListMangas();
         store.dispatch('app/setIsLoading', false);
     },
     methods: {
         async getListMangas() {
-            this.listmanga = (await instance.get('/manga/?page=1&limit=6&sortField=updatedAt&sortOrder=desc')).data.result.data;
+            this.listmanga = (await instance.get('/manga/?page=1&limit=6&sortField=createdAt&sortOrder=desc')).data.result.data;
         },
         getCurrentChapter() {
             const regex = /(\d+(\.\d+)?)/;
@@ -239,6 +239,10 @@ export default {
         }
     },
     async beforeRouteUpdate(to, from, next) {
+        if(to.hash.startsWith('#')){
+            next();
+            return;
+        }
         this.chapter = to.params.chapter;
         await this.getChapterInfo();
         await this.getContentByName();

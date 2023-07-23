@@ -38,4 +38,6 @@ export default {
 .scrollbar::-webkit-scrollbar-track {
     background-color: transparent;
     /* Màu của vùng bên trong thanh cuộn */
-}</style>
+}
+
+</style>

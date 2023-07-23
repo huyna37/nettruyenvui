@@ -33,7 +33,7 @@ import instance from '@/Unilities/axios/index';
 import { useRoute } from 'vue-router';
 import Paginate from '@/shared/paginate'
 export default {
-    name: "home-main",
+    name: "list-main",
     components: {
         Paginate
     },
@@ -68,7 +68,7 @@ export default {
                 let query = {
                     page: this.pageIndex,
                     limit: this.limit,
-                    sortField: 'updatedAt',
+                    sortField: 'createdAt',
                     sortOrder: 'desc'
                 }
                 if (this.category) {
@@ -97,6 +97,10 @@ export default {
 
     },
     beforeRouteUpdate(to, from, next) {
+        if(to.hash.startsWith('#')){
+            next();
+            return;
+        }
         this.name = to.params.name;
         this.category = to.params.category;
         // Thực hiện các tác vụ tải lại component hoặc khởi tạo lại dữ liệu

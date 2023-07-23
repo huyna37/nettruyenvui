@@ -9,10 +9,14 @@ const state = {
   isLoading: false,
   titleCurrent: "",
   env: process.env.NODE_ENV,
-  isMobileDevice: false
+  isMobileDevice: false,
+  isNavOpen: false
 };
 
 const mutations = {
+  SET_NavOpen: (state, val) => {
+    state.isNavOpen = val;
+  },
   SET_AUTH: (state, val) => {
     state.isAuth = val;
   },
@@ -34,6 +38,9 @@ const mutations = {
 };
 
 const actions = {
+  setNavOpen({ commit }, val) {
+    commit("SET_NavOpen", val);
+  },
   setAuth({ commit }, val) {
     commit("SET_AUTH", val);
   },

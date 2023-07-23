@@ -12,6 +12,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  if(to.hash.startsWith('#')){
+      next();
+      return;
+  }
   store.dispatch('app/setIsLoading', true);
   document.title = `${to?.meta?.titleSEO ? to.meta.titleSEO : to?.meta?.title} | Meoden.Online`;
   // Cập nhật thẻ "canonical" trên trang hiện tại
@@ -27,9 +31,7 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(() => {
   // Gửi dữ liệu phân tích cho trang mới
-  setTimeout(() => {
-    store.dispatch('app/setIsLoading', false);
-  }, 300)
+  store.dispatch('app/setIsLoading', false);
 });
 
 

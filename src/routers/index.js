@@ -39,7 +39,7 @@ export const routerMain = {
       },
     },
     {
-      path: "danh-sach/:name?",
+      path: "/danh-sach/:name?",
       component: List,
       name: "list",
       meta: {
@@ -49,9 +49,9 @@ export const routerMain = {
       },
     },
     {
-      path: "the-loai/:category?",
+      path: "/the-loai/:category?",
       component: List,
-      name: "list",
+      name: "list-category",
       meta: {
         title: "NetTruyenVui Chuyên Vui Truyện Cùng Ae",
         icon: "fa-solid fa-home text-success",

@@ -3,10 +3,10 @@
         <section class="row">
             <div class='col-md-8 row'>
                 <div class='col-md-4 col-sm-12' :class="{ 'max-md:tw-hidden': data.showImage }">
-                    <img :src="`https://crawler.meoden.online/manga/${data._id}/coverImage`" class="tw-rounded-xl tw-w-[100%]" />
+                    <img v-if="data._id" :src="`https://crawler.meoden.online/manga/${data._id}/coverImage`" class="tw-rounded-xl tw-w-[100%]" />
                 </div>
                 <div class='col-md-4 col-sm-12 tw-hidden max-md:tw-block'>
-                    <img :src="`https://crawler.meoden.online/manga/${data._id}/showImage`" class="tw-rounded-xl tw-w-[100%]" />
+                    <img v-if="data._id" :src="`https://crawler.meoden.online/manga/${data._id}/showImage`" class="tw-rounded-xl tw-w-[100%]" />
                 </div>
                 <div class='col-md-8'>
                     <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ data.name }}</h4>
@@ -138,7 +138,7 @@
                     </h2>
                     <div class="tw-s480:grid tw-s480:grid-cols-2 tw-s768:grid-cols-4 tw-s1024:block tw-gap-[10px]">
                         <div class="tw-mb-4 tw-s480:mb-0 tw-s1024:mb-4" v-for="top in listMangaTop" v-bind:key="top">
-                            <RouterLink :to="'/' + top.slug">
+                            <RouterLink :to="'/' + top.slug" v-if="top._id">
                                 <div class="tw-relative tw-rounded-xl tw-overflow-hidden">
                                     <img class="tw-w-[auto]" :src="`https://crawler.meoden.online/manga/${top._id}/showImage`" :alt="top.name">
                                     <div
@@ -157,17 +157,17 @@
             </div>
         </section>
 
-        <section class="container tw-px-[10px] tw-mt-[20px] s768:tw-mt-[30px]">
+        <section class="tw-relative container tw-px-[10px] tw-mt-[20px] s768:tw-mt-[30px]">
             <h2 class="tw-w-full tw-text-orange-600 tw-mb-2 tw-uppercase">ĐỪNG BỎ LỠ</h2>
             <div
-                class="tw-flex tw-snap-x tw-snap-mandatory tw-overflow-x-auto s640:tw-grid s640:tw-grid-cols-4 tw-gap-[10px]">
+                class="tw-flex tw-snap-x tw-snap-mandatory tw-overflow-x-auto tw-gap-[10px] list-dont" id="list-dont" :style="scrollContainerStyle">
                 <div v-for="dont in listmanga" v-bind:key="dont"
-                    class="tw-relative tw-snap-always tw-snap-start tw-shrink-0 s640:tw-w-auto s640:tw-h-auto">
-                    <RouterLink :to="'/' + dont.slug">
+                    class="tw-relative tw-snap-always tw-snap-start tw-shrink-0">
+                    <RouterLink :to="'/' + dont.slug" v-if="dont._id">
                         <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
                             <img class="tw-w-[auto] tw-h-[auto]" :src="`https://crawler.meoden.online/manga/${dont._id}/coverImage`" :alt="dont.name">
                             <span
-                                class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">1.7K
+                                class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">{{ dont.views }}
                                 <i class="fas fa-eye"></i></span>
                         </div>
                         <h3
@@ -175,6 +175,16 @@
                             {{ dont.name }}</h3>
                     </RouterLink>
                 </div>
+                <div v-show="!isMaxList"
+                        class="tw-absolute tw-top-[40%] tw-right-[1rem] tw-text-[2rem] tw-text-[red] tw-cursor-pointer"
+                        @click="scrollListMovie()">
+                        <i class="fa-solid fa-circle-arrow-right"></i>
+                    </div>
+                    <div v-show="isMaxList"
+                        class="tw-absolute tw-top-[40%] tw-left-[1rem] tw-text-[2rem] tw-text-[red] tw-cursor-pointer"
+                        @click="scrollListMovie(true)">
+                        <i class="fa-solid fa-circle-arrow-left"></i>
+                    </div>
             </div>
         </section>
     </div>
@@ -210,34 +220,49 @@ export default {
             isLoadingMore: false,
             inputSearch: '',
             listmanga: [],
-            listMangaTop: []
+            listMangaTop: [],
+            isMaxList: false,
+            scrollContainerStyle: {
+                scrollBehavior: "smooth",
+                overflowX: "scroll",
+            }
         }
     },
     async created() {
         store.dispatch('app/setIsLoading', true);
-        await this.getDetail();
+        await Promise.all([this.getDetail(), this.getListMangas(), this.getListMangasTop()]);
+        document.title = `${this.data.name} - NetTruyenVui`;
         this.listChapter = (await this.getListChapter())?.data;
-        await this.getListMangas();
-        await this.getListMangasTop();
         store.dispatch('app/setIsLoading', false);
     },
     async beforeRouteUpdate(to, from, next) {
+        if(to.hash.startsWith('#')){
+            next();
+            return;
+        }
         this.name = to.params.name;
         // Thực hiện các tác vụ tải lại component hoặc khởi tạo lại dữ liệu
-        await this.getDetail();
+        await Promise.all([this.getDetail(), this.getListMangas(), this.getListMangasTop()])
         this.listChapter = (await this.getListChapter())?.data;
-        await this.getListMangas();
-        await this.getListMangasTop();
-
         // Tiếp tục điều hướng
         next();
     },
     methods: {
+        scrollListMovie(reduce) {
+            let container = document.getElementById('list-dont');
+            if (!reduce) {
+                container.scrollLeft += 200; // Cuộn 200px bên phải
+                this.isMaxList = container.scrollLeft >= (container.scrollWidth - container.clientWidth) - 300;
+            } else {
+                container.scrollLeft = 0; // Cuộn về đầu danh sách
+                this.isMaxList = false;
+            }
+        },
         async getListMangas() {
-            this.listmanga = (await instance.get('/manga/?page=1&limit=5&sortField=name&sortOrder=asc')).data.result.data;
+            this.listmanga = (await instance.get('/manga/?page=1&limit=15&sortField=name&sortOrder=asc&filterOptions={"genre": { $regex: "Ecchi", $options: "i"}')).data.result.data;
         },
         async getListMangasTop() {
-            this.listMangaTop = (await instance.get('/manga/?page=1&limit=5&sortField=views&sortOrder=asc&filterOptions={"typeShow":"1"}')).data.result.data;
+            this.listMangaTop = (await instance.get('/manga/?page=1&limit=5&sortField=views&sortOrder=asc&filterOptions={"genre": { $regex: "Yuri", $options: "i"}')).data.result.data;
         },
         async getDetail() {
             this.data = (await instance.get('/manga/' + this.name)).data.result;
@@ -274,3 +299,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.list-dont::-webkit-scrollbar {
+    width: 1px;
+}
+</style>
