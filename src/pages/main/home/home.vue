@@ -5,8 +5,11 @@
                 <RouterLink :to='mangaSpecial.slug' class='col-md-12 col-lg-6 max-md:tw-mb-[1rem] tw-min-h-[10rem]'>
                     <div class="tw-h-full tw-relative">
                         <img class="tw-w-full tw-h-full tw-rounded-xl"
-                            :src="`https://crawler.meoden.online/manga/${mangaSpecial._id}/showImage`" data-id="100322"
+                            :src="`${mangaSpecial.showImage}`" data-id="100322"
                             :alt="mangaSpecial.name">
+                        <!-- <img class="tw-w-full tw-h-full tw-rounded-xl"
+                            :src="`https://crawler.meoden.online/manga/${mangaSpecial._id}/showImage`" data-id="100322"
+                            :alt="mangaSpecial.name"> -->
                         <div
                             class="tw-rounded-xl tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
                             <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">{{ mangaSpecial.views }}
@@ -37,8 +40,11 @@
                             <RouterLink :to="data2?.slug ?? '/'">
                                 <div class="tw-h-full tw-relative">
                                     <img class="tw-w-full tw-h-full tw-rounded-xl"
-                                        :src="`https://crawler.meoden.online/manga/${data2._id}/showImage`" data-id="100305"
+                                        :src="`${data2.showImage}`" data-id="100305"
                                         :alt="data2.name">
+                                    <!-- <img class="tw-w-full tw-h-full tw-rounded-xl"
+                                    :src="`https://crawler.meoden.online/manga/${data2._id}/showImage`" data-id="100305"
+                                    :alt="data2.name"> -->
                                     <div
                                         class="tw-absolute tw-rounded-xl tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] max-md:tw-pt-[5px] tw-pt-[80px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
                                         <span class="tw-font-extralight tw-text-[12px] tw-dark:text-teal-300">{{ data2.views
@@ -84,8 +90,11 @@
                 :to="`${chapterNew.manga.slug}/${chapterNew.slug}` ?? '#'"
                 class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[1rem] hover:overscroll-contain hover:tw-shadow-2xl scroll-none-custom'>
                 <img class="tw-h-[auto] tw-w-full tw-rounded-xl max-md:tw-h-[14rem] md:tw-h-[18rem]"
-                    :src="`https://crawler.meoden.online/manga/${chapterNew.manga._id}/coverImage`"
+                    :src="`${chapterNew.manga.coverImage}`"
                     :alt="chapterNew.manga.name">
+                <!-- <img class="tw-h-[auto] tw-w-full tw-rounded-xl max-md:tw-h-[14rem] md:tw-h-[18rem]"
+                    :src="`https://crawler.meoden.online/manga/${chapterNew.manga._id}/coverImage`"
+                    :alt="chapterNew.manga.name"> -->
                 <p class='tw-text-slate-800 tw-h-[42px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
                     <b>{{ chapterNew.manga.name }}</b> - <b>{{ chapterNew.title }}</b>
                 </p>
@@ -105,7 +114,9 @@
                         <RouterLink :to="data4.slug">
                             <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
                                 <img class="tw-w-full tw-h-full"
-                                    :src="`https://crawler.meoden.online/manga/${data4._id}/showImage`" :alt="data4.name">
+                                    :src="`${data4.showImage}`" :alt="data4.name">
+                                <!-- <img class="tw-w-full tw-h-full"
+                                    :src="`https://crawler.meoden.online/manga/${data4._id}/showImage`" :alt="data4.name"> -->
                                 <span
                                     class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-violet-900/80 dark:tw-bg-teal-900/80 tw-text-white tw-text-[12px] tw-font-light">{{
                                         data4.views }}
@@ -139,7 +150,9 @@
             <RouterLink v-for="data3 in mangas2" v-bind:key="data3" :to="data3.slug ?? '#'"
                 class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[1rem] hover:overscroll-contain hover:tw-shadow-2xl scroll-none-custom'>
                 <img class="tw-h-[auto] tw-w-full tw-rounded-xl max-md:tw-h-[14rem] md:tw-h-[18rem]"
-                    :src="`https://crawler.meoden.online/manga/${data3._id}/coverImage`" :alt="data3.name">
+                    :src="`${data3.coverImage}`" :alt="data3.name">
+                <!-- <img class="tw-h-[auto] tw-w-full tw-rounded-xl max-md:tw-h-[14rem] md:tw-h-[18rem]"
+                    :src="`https://crawler.meoden.online/manga/${data3._id}/coverImage`" :alt="data3.name"> -->
                 <p class='tw-text-slate-800 tw-h-[42px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
                     {{ data3.name }}
                 </p>
@@ -154,7 +167,9 @@
                 <RouterLink :to="data5.slug"
                     class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[1rem] hover:overscroll-contain hover:tw-shadow-2xl'>
                     <img class="tw-h-[auto] tw-w-full tw-rounded-xl max-md:tw-h-[14rem] md:tw-h-[18rem]"
-                        :src="`https://crawler.meoden.online/manga/${data5._id}/coverImage`" :alt="data5.name">
+                        :src="`${data5.coverImage}`" :alt="data5.name">
+                    <!-- <img class="tw-h-[auto] tw-w-full tw-rounded-xl max-md:tw-h-[14rem] md:tw-h-[18rem]"
+                        :src="`https://crawler.meoden.online/manga/${data5._id}/coverImage`" :alt="data5.name"> -->
                     <p class='tw-text-slate-800 tw-h-[42px] tw-overflow-hidden tw-text-center tw-mt-1 tw-text-[13px]'>
                         {{ data5.name }}
                     </p>
@@ -208,7 +223,7 @@ export default {
             this.mangas1 = response.data.result.data;
         },
         async getMangas2() {
-            this.mangas2 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "Action", $options: "i"}&sortField=createdAt&sortOrder=desc')).data.result.data;
+            this.mangas2 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "\\baction\\b", $options: "i"}&sortField=createdAt&sortOrder=desc')).data.result.data;
         },
         async getMangas3() {
             this.mangas3 = (await instance.get('/manga/?page=1&limit=12&sortField=name&sortOrder=desc')).data.result.data;
