@@ -259,10 +259,10 @@ export default {
             }
         },
         async getListMangas() {
-            this.listmanga = (await instance.get('/manga/?page=1&limit=15&sortField=name&sortOrder=asc&filterOptions={"genre": { $regex: "Ecchi", $options: "i"}')).data.result.data;
+            this.listmanga = (await instance.get('/manga/?page=1&limit=15&sortField=name&sortOrder=asc&filterOptions={"genre": { $regex:"\\bEcchi\\b", $options: "i"}')).data.result.data;
         },
         async getListMangasTop() {
-            this.listMangaTop = (await instance.get('/manga/?page=1&limit=5&sortField=views&sortOrder=asc&filterOptions={"genre": { $regex: "Yuri", $options: "i"}')).data.result.data;
+            this.listMangaTop = (await instance.get('/manga/?page=1&limit=5&sortField=views&sortOrder=asc&filterOptions={"genre": { $regex: "\\bYuri\\b", $options: "i"}')).data.result.data;
         },
         async getDetail() {
             this.data = (await instance.get('/manga/' + this.name)).data.result;
