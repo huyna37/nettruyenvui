@@ -3,10 +3,10 @@
         <section class="row">
             <div class='col-md-8 row'>
                 <div class='col-md-4 col-sm-12' :class="{ 'max-md:tw-hidden': data.showImage }">
-                    <img v-if="data._id" :src="`https://crawler.meoden.online/manga/${data._id}/coverImage`" class="tw-rounded-xl tw-w-[100%]" />
+                    <img v-if="data._id" :src="`${data.coverImage}`" class="tw-rounded-xl tw-w-[100%]" />
                 </div>
                 <div class='col-md-4 col-sm-12 tw-hidden max-md:tw-block'>
-                    <img v-if="data._id" :src="`https://crawler.meoden.online/manga/${data._id}/showImage`" class="tw-rounded-xl tw-w-[100%]" />
+                    <img v-if="data._id" :src="`${data.showImage}`" class="tw-rounded-xl tw-w-[100%]" />
                 </div>
                 <div class='col-md-8'>
                     <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ data.name }}</h4>
@@ -140,7 +140,7 @@
                         <div class="tw-mb-4 tw-s480:mb-0 tw-s1024:mb-4" v-for="top in listMangaTop" v-bind:key="top">
                             <RouterLink :to="'/' + top.slug" v-if="top._id">
                                 <div class="tw-relative tw-rounded-xl tw-overflow-hidden">
-                                    <img class="tw-w-[auto]" :src="`https://crawler.meoden.online/manga/${top._id}/showImage`" :alt="top.name">
+                                    <img class="tw-w-[auto]" :src="`${top.showImage}`" :alt="top.name">
                                     <div
                                         class="tw-absolute tw-left-0 tw-right-0 tw-bottom-0 tw-px-[10px] tw-pt-[20px] tw-pb-[5px] tw-bg-gradient-to-b tw-from-transparent tw-to-black tw-text-white tw-dark:text-teal-500">
                                         <span class="tw-text-[12px] tw-font-extralight tw-dark:text-teal-300">{{ top.views
@@ -165,7 +165,7 @@
                     class="tw-relative tw-snap-always tw-snap-start tw-shrink-0">
                     <RouterLink :to="'/' + dont.slug" v-if="dont._id">
                         <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
-                            <img class="tw-w-[auto] tw-h-[auto]" :src="`https://crawler.meoden.online/manga/${dont._id}/coverImage`" :alt="dont.name">
+                            <img class="tw-w-[auto] tw-h-[auto]" :src="`${dont?.coverImage}`" :alt="dont.name">
                             <span
                                 class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">{{ dont.views }}
                                 <i class="fas fa-eye"></i></span>
