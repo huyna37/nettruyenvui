@@ -67,7 +67,7 @@
                 </div>
             </template>
             <template v-for="(img, index) in visibleFiles" :key="index">
-                <img class="tw-w-[auto]" :src="`${img.link}`" />
+                <img class="tw-w-[auto]" :src="`https://crawler.meoden.online/image/${img._id}`" />
             </template>
             <div
                 class="tw-fixed tw-bottom-[10px] tw-left-0 tw-right-0 tw-w-[300px] tw-bg-black/50 tw-rounded-2xl tw-py-[10px] tw-mx-auto tw-flex tw-justify-center tw-gap-[10px] tw-z-50">
