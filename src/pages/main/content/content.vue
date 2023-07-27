@@ -34,7 +34,7 @@
                     </div>
                     <div class="mb-2 text-[14px]">
                         <label class="tw-w-[100px] tw-inline-block">Lượt đọc</label>
-                        <span>{{ manga.views }}</span>
+                        <span>{{ chapterInfo?.views }}</span>
                     </div>
                     <div>
                         <button

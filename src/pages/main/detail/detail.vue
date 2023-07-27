@@ -21,7 +21,10 @@
                     </div>
                     <div class="tw-mb-2 tw-text-[14px]">
                         <label class="tw-w-[100px] tw-inline-block">Mới nhất</label>
-                        <span><RouterLink class="tw-text-orange-600" :to="newestPage?.slug ?? '/'">{{ newestPage?.title }}</RouterLink></span>
+                        <span>
+                            <RouterLink class="tw-text-orange-600" :to="newestPage?.slug ?? '/'">{{ newestPage?.title }}
+                            </RouterLink>
+                        </span>
                     </div>
                     <div class="mb-4 text-[14px]">
                         <label class="tw-w-[100px] tw-inline-block">Lượt đọc</label>
@@ -42,9 +45,9 @@
                     </div>
 
                 </div>
-                <div class="tw-mt-[20px] s768:tw-mt-[30px] tw-uppercase tw-text-orange-600">Nội dung</div>
+                <div class="tw-mt-[10px] tw-uppercase tw-text-orange-600">Nội dung</div>
 
-                <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
+                <div class="tw-mt-[5px] tw-text-[15px] tw-font-light">
                     {{ data.description }}
                 </div>
 
@@ -101,7 +104,7 @@
                                     {{ chapter.createdAt?.formatDate() }}
                                 </span>
                                 <span class="tw-min-w-[80px] tw-shrink-0 tw-text-right tw-chapter-views">
-                                    4,319
+                                    {{ chapter.views }}
                                 </span>
                             </div>
                         </template>
@@ -157,17 +160,18 @@
             </div>
         </section>
 
-        <section class="tw-relative container tw-px-[10px] tw-mt-[20px] s768:tw-mt-[30px]">
+        <section class="tw-relative container tw-px-[10px] tw-mt-[20px] tw-pl-[0px]">
             <h2 class="tw-w-full tw-text-orange-600 tw-mb-2 tw-uppercase">ĐỪNG BỎ LỠ</h2>
-            <div
-                class="tw-flex tw-snap-x tw-snap-mandatory tw-overflow-x-auto tw-gap-[10px] list-dont" id="list-dont" :style="scrollContainerStyle">
+            <div class="tw-flex tw-snap-x tw-snap-mandatory tw-overflow-x-auto tw-gap-[10px] list-dont" id="list-dont"
+                :style="scrollContainerStyle">
                 <div v-for="dont in listmanga" v-bind:key="dont"
                     class="tw-relative tw-snap-always tw-snap-start tw-shrink-0">
                     <RouterLink :to="'/' + dont.slug" v-if="dont._id">
                         <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
-                            <img class="tw-w-[auto] tw-h-[auto]" :src="`${dont?.coverImage}`" :alt="dont.name">
+                            <img class="tw-w-[200px] tw-h-[300px]" :src="`${dont?.coverImage}`" :alt="dont.name">
                             <span
-                                class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">{{ dont.views }}
+                                class="tw-absolute tw-top-[10px] tw-left-[10px] tw-rounded-lg tw-px-2 tw-bg-red-500/80 tw-text-white tw-text-[12px] tw-font-light">{{
+                                    dont.views }}
                                 <i class="fas fa-eye"></i></span>
                         </div>
                         <h3
@@ -176,15 +180,15 @@
                     </RouterLink>
                 </div>
                 <div v-show="!isMaxList"
-                        class="tw-absolute tw-top-[40%] tw-right-[1rem] tw-text-[2rem] tw-text-[red] tw-cursor-pointer"
-                        @click="scrollListMovie()">
-                        <i class="fa-solid fa-circle-arrow-right"></i>
-                    </div>
-                    <div v-show="isMaxList"
-                        class="tw-absolute tw-top-[40%] tw-left-[1rem] tw-text-[2rem] tw-text-[red] tw-cursor-pointer"
-                        @click="scrollListMovie(true)">
-                        <i class="fa-solid fa-circle-arrow-left"></i>
-                    </div>
+                    class="tw-absolute tw-top-[40%] tw-right-[1rem] tw-text-[2rem] tw-text-[red] tw-cursor-pointer"
+                    @click="scrollListMovie()">
+                    <i class="fa-solid fa-circle-arrow-right"></i>
+                </div>
+                <div v-show="isMaxList"
+                    class="tw-absolute tw-top-[40%] tw-left-[1rem] tw-text-[2rem] tw-text-[red] tw-cursor-pointer"
+                    @click="scrollListMovie(true)">
+                    <i class="fa-solid fa-circle-arrow-left"></i>
+                </div>
             </div>
         </section>
     </div>
@@ -236,7 +240,7 @@ export default {
         store.dispatch('app/setIsLoading', false);
     },
     async beforeRouteUpdate(to, from, next) {
-        if(to.hash.startsWith('#')){
+        if (to.hash.startsWith('#')) {
             next();
             return;
         }
@@ -259,10 +263,44 @@ export default {
             }
         },
         async getListMangas() {
-            this.listmanga = (await instance.get('/manga/?page=1&limit=15&sortField=name&sortOrder=asc&filterOptions={"genre": { $regex:"\\bEcchi\\b", $options: "i"}')).data.result.data;
+            try {
+                let query = {
+                    page: 1,
+                    limit: 15,
+                    sortField: 'createdAt',
+                    sortOrder: 'desc',
+                    filterOptions: JSON.stringify({
+                        "genre":{"$regex":"\\bcomedy\\b","$options":"i"}
+                    })
+                }
+                const response = await instance.get(`/manga/`, {
+                    params: query
+                });
+                this.listmanga = response.data.result.data;
+            } catch (error) {
+                // Xử lý lỗi ở đây nếu cần thiết
+                console.error('Error in getListMangas:', error);
+            }
         },
         async getListMangasTop() {
-            this.listMangaTop = (await instance.get('/manga/?page=1&limit=5&sortField=views&sortOrder=asc&filterOptions={"genre": { $regex: "\\bYuri\\b", $options: "i"}')).data.result.data;
+            try {
+                let query = {
+                    page: 1,
+                    limit: 5,
+                    sortField: 'views',
+                    sortOrder: 'asc',
+                    filterOptions: JSON.stringify({
+                        "genre":{"$regex":"\\bYuri\\b","$options":"i"}
+                    })
+                }
+                const response = await instance.get(`/manga/`, {
+                    params: query
+                });
+                this.listMangaTop = response.data.result.data;
+            } catch (error) {
+                // Xử lý lỗi ở đây nếu cần thiết
+                console.error('Error in getListMangasTop:', error);
+            }
         },
         async getDetail() {
             this.data = (await instance.get('/manga/' + this.name)).data.result;
@@ -303,5 +341,4 @@ export default {
 <style>
 .list-dont::-webkit-scrollbar {
     width: 1px;
-}
-</style>
+}</style>
