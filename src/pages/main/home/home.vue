@@ -214,7 +214,7 @@ export default {
                 limit: 5,
                 sortField: 'createdAt',
                 sortOrder: 'desc',
-                filterOptions: JSON.stringify({ "genre": { "$regex": "\\bshounen\\b", "$options": "i" } })
+                filterOptions: JSON.stringify({ "genre": { "$regex": "\\bharem\\b", "$options": "i" } })
             }
 
             const response = await instance.get(`/manga/`, {
