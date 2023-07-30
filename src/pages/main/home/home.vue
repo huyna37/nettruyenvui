@@ -145,9 +145,9 @@
         <section class="tw-mt-[1rem] row">
             <h2
                 class="tw-color-[red] tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
-                <a href="/chap-moi-nhat">CHƯƠNG MỚI NHẤT</a>
+                <a href="/chap-moi-nhat">TRUYỆN HAREM</a>
             </h2>
-            <RouterLink v-for="data3 in mangas2" v-bind:key="data3" :to="data3.slug ?? '#'"
+            <RouterLink v-for="data3 in mangas3" v-bind:key="data3" :to="data3.slug ?? '#'"
                 class='col-lg-2 col-md-3 col-4 max-lg:tw-mb-[1rem] hover:overscroll-contain hover:tw-shadow-2xl scroll-none-custom'>
                 <img class="tw-h-[auto] tw-w-full tw-rounded-xl max-md:tw-h-[14rem] md:tw-h-[18rem]"
                     :src="`${data3.coverImage}`" :alt="data3.name">
@@ -226,7 +226,7 @@ export default {
             this.mangas2 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "\\baction\\b", $options: "i"}&sortField=createdAt&sortOrder=desc')).data.result.data;
         },
         async getMangas3() {
-            this.mangas3 = (await instance.get('/manga/?page=1&limit=12&sortField=name&sortOrder=desc')).data.result.data;
+            this.mangas3 = (await instance.get('/manga/?page=1&limit=12&sortField=name&filterOptions={"genre": { $regex: "\\bharem\\b", $options: "i"}&sortOrder=desc')).data.result.data;
         },
         async getMangas4() {
             // Chuẩn bị truy vấn tìm kiếm

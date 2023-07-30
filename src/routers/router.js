@@ -17,11 +17,12 @@ router.beforeEach((to, from, next) => {
       return;
   }
   store.dispatch('app/setIsLoading', true);
-  document.title = `${to?.meta?.titleSEO ? to.meta.titleSEO : to?.meta?.title} | Meoden.Online`;
+  store.dispatch('app/setCurrentPath', to.fullPath)
+  document.title = `${to?.meta?.titleSEO ? to.meta.titleSEO : to?.meta?.title} | Truyenvui.Online`;
   // Cập nhật thẻ "canonical" trên trang hiện tại
   const canonicalLink = document.querySelector('link[rel="canonical"]');
   if (canonicalLink) {
-    canonicalLink.setAttribute('href', 'https://meoden.online' + to?.path);
+    canonicalLink.setAttribute('href', 'https://Truyenvui.online' + to?.path);
   }
 
   next()

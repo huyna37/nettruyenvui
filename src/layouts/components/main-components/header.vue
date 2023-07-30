@@ -1,21 +1,19 @@
 <template>
-  <nav
-    class="navbar navbar-expand-lg bg-body-tertiary tw-shadow tw-bg-white">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary tw-shadow tw-bg-white">
     <div class="container">
       <RouterLink
         class="navbar-brand tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-red-500 tw-to-violet-500 tw-dark:from-red-500 tw-dark:to-teal-600 tw-text-[22px]"
-        to="/">NETTRUYENVUI</RouterLink>
-      <button class="navbar-toggler" type="button" @click="toggleNav()"
-        aria-controls="navbarSupportedContent">
+        to="/">TRUYENVUI</RouterLink>
+      <button class="navbar-toggler" type="button" @click="toggleNav()" aria-controls="navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" :class="{'tw-block': isNavOpen}" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse" :class="{ 'tw-block': isNavOpen }" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <RouterLink class="nav-link active" aria-current="page" to="/danh-sach">Danh Sách</RouterLink>
+            <RouterLink class="nav-link" to="/danh-sach">Danh Sách</RouterLink>
           </li>
           <li class="nav-item tw-relative list-category tw-cursor-pointer">
-            <span class="nav-link">Thể Loại</span>
+            <span class="nav-link" :class="{ 'active-link': isActiveCategory }">Thể Loại</span>
             <div
               class="menu-category tw-absolute tw-z-[2] tw-p-[15px] tw-rounded-lg tw-w-[25rem] tw-left-[15%] max-md:tw-left-[-5%] max-md:tw-top-[8%]">
               <ul
@@ -147,38 +145,38 @@
                       Ecchi</RouterLink>
                   </li>
                   <li>
-                  <RouterLink class="md:hover:tw-text-violet-600 dark:md:hover:tw-text-teal-500 "
-                    to="/the-loai/supernature">Supernature</RouterLink>
-                </li>
-                <li>
-                  <RouterLink class="md:hover:tw-text-violet-600 dark:md:hover:tw-text-teal-500 "
-                    to="/the-loai/martial-arts">Martial Arts</RouterLink>
-                </li>
-                <li>
-                  <RouterLink class="md:hover:tw-text-violet-600 dark:md:hover:tw-text-teal-500 "
-                    to="/the-loai/gourmet">Gourmet</RouterLink>
-                </li>
-              </div>
-            </ul>
-          </div>
-        </li>
-        <li class="nav-item">
-          <span class="nav-link">Bảng Xếp Hạng</span>
-        </li>
-      </ul>
-      <form class="d-flex" role="search" v-on:submit.prevent="search">
-        <input v-model="input" class="form-control me-2 tw-text-[13px]" type="search" placeholder="Search"
-          aria-label="Search">
-        <button class="btn btn-outline-success tw-text-[13px] tw-whitespace-nowrap" type="submit">Tìm Kiếm</button>
-      </form>
+                    <RouterLink class="md:hover:tw-text-violet-600 dark:md:hover:tw-text-teal-500 "
+                      to="/the-loai/supernature">Supernature</RouterLink>
+                  </li>
+                  <li>
+                    <RouterLink class="md:hover:tw-text-violet-600 dark:md:hover:tw-text-teal-500 "
+                      to="/the-loai/martial-arts">Martial Arts</RouterLink>
+                  </li>
+                  <li>
+                    <RouterLink class="md:hover:tw-text-violet-600 dark:md:hover:tw-text-teal-500 "
+                      to="/the-loai/gourmet">Gourmet</RouterLink>
+                  </li>
+                </div>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" to="/top-anime">Bảng Xếp Hạng</RouterLink>
+          </li>
+        </ul>
+        <form class="d-flex" role="search" v-on:submit.prevent="search">
+          <input v-model="input" class="form-control me-2 tw-text-[13px]" type="search" placeholder="Search"
+            aria-label="Search">
+          <button class="btn btn-outline-success tw-text-[13px] tw-whitespace-nowrap" type="submit">Tìm Kiếm</button>
+        </form>
+      </div>
     </div>
-  </div>
-</nav></template>
+  </nav>
+</template>
   
 <script>
 import store from '@/store/store';
 import { mapState } from 'vuex'
-
 
 export default {
   name: "header-main",
@@ -187,12 +185,15 @@ export default {
       input: ''
     }
   },
-  created() {
-  },
   computed: {
-        ...mapState({
-          isNavOpen: state => state.app.isNavOpen,
-        })
+    ...mapState({
+      isNavOpen: state => state.app.isNavOpen,
+      currentPath: state => state.app.currentPath
+    }),
+    isActiveCategory() {
+      if(!this.currentPath) return false;
+      return this.currentPath.startsWith("/the-loai");
+    }
   },
   methods: {
     search() {
@@ -205,7 +206,8 @@ export default {
 }
 </script>
 
-<style>.menu-category {
+<style>
+.menu-category {
   visibility: hidden;
   opacity: 0;
   /* Không hiển thị và không chiếm không gian */
@@ -217,4 +219,9 @@ export default {
   visibility: visible;
   opacity: 1;
   /* Hiển thị */
-}</style>
+}
+
+.nav-link {
+  color: black;
+}
+</style>

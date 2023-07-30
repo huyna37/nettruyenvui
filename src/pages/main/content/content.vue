@@ -9,7 +9,7 @@
                 {{ chapter.upperCaseFirst() }}
             </div>
         </section>
-        <section class="row">
+        <section class="row mb-3 mt-2">
             <div class='col-md-8 row max-md:tw-mb-2' v-if="manga">
                 <div class='col-md-4 col-sm-12' :class="{ 'max-md:tw-hidden': manga.showImage }">
                     <img :src="`${manga?.coverImage}`" class="tw-rounded-xl tw-w-[100%]" />
@@ -59,7 +59,7 @@
 
             </div>
         </section>
-        <hr/>
+        <hr />
         <main class='row tw-mt-[20px] tw-text-center d-flex justify-content-center'>
             <template v-if="!visibleFiles || visibleFiles.length === 0">
                 <div class="alert alert-primary tw-mt-3" role="alert">
@@ -67,7 +67,7 @@
                 </div>
             </template>
             <template v-for="(img, index) in visibleFiles" :key="index">
-                <img class="tw-w-[auto]" :src="`https://crawler.meoden.online/image/${img._id}`" />
+                <img class="tw-w-[auto]" :src="img.link" />
             </template>
             <div
                 class="tw-fixed tw-bottom-[10px] tw-left-0 tw-right-0 tw-w-[300px] tw-bg-black/50 tw-rounded-2xl tw-py-[10px] tw-mx-auto tw-flex tw-justify-center tw-gap-[10px] tw-z-50">
@@ -138,7 +138,6 @@ export default {
         const route = useRoute();
         let name = route.params.name;
         let chapter = route.params.chapter;
-
 
         return {
             name,

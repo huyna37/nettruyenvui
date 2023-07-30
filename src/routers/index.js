@@ -3,6 +3,7 @@ const Home = () => import("@/pages/main/home/home.vue");
 const Detail = () => import("@/pages/main/detail/detail.vue");
 const Content = () => import("@/pages/main/content/content.vue");
 const List = () => import("@/pages/main/list/list.vue");
+const Top = () => import("@/pages/main/top-views/top.vue");
 
 export const routerMain = {
   path: "/",
@@ -13,7 +14,7 @@ export const routerMain = {
       component: Home,
       name: "home",
       meta: {
-        title: "Truyện Anime siêu hot",
+        title: "Truyenvui.online, Cùng đọc, Cùng Tận Hưởng",
         icon: "fa-solid fa-home text-success",
         affix: true,
       },
@@ -23,7 +24,7 @@ export const routerMain = {
       component: Detail,
       name: "detail",
       meta: {
-        title: "Anime",
+        title: "Truyenvui.online, Cùng đọc, Cùng Tận Hưởng",
         icon: "fa-solid fa-home text-success",
         affix: true,
       },
@@ -33,7 +34,7 @@ export const routerMain = {
       component: Content,
       name: "content",
       meta: {
-        title: "NetTruyenVui Chuyên Vui Truyện Cùng Ae",
+        title: "Truyenvui.online, Cùng đọc, Cùng Tận Hưởng",
         icon: "fa-solid fa-home text-success",
         affix: true,
       },
@@ -43,7 +44,7 @@ export const routerMain = {
       component: List,
       name: "list",
       meta: {
-        title: "NetTruyenVui Chuyên Vui Truyện Cùng Ae",
+        title: "Truyenvui.online, Cùng đọc, Cùng Tận Hưởng",
         icon: "fa-solid fa-home text-success",
         affix: true,
       },
@@ -53,7 +54,17 @@ export const routerMain = {
       component: List,
       name: "list-category",
       meta: {
-        title: "NetTruyenVui Chuyên Vui Truyện Cùng Ae",
+        title: "Truyenvui.online, Cùng đọc, Cùng Tận Hưởng",
+        icon: "fa-solid fa-home text-success",
+        affix: true,
+      },
+    },
+    {
+      path: "/top-anime",
+      component: Top,
+      name: "top-anime",
+      meta: {
+        title: "Truyenvui.online, Cùng đọc, Cùng Tận Hưởng",
         icon: "fa-solid fa-home text-success",
         affix: true,
       },

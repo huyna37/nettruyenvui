@@ -1,57 +1,59 @@
 <template>
     <div class='container tw-mt-[1rem]' v-if="data">
         <section class="row">
-            <div class='col-md-8 row'>
-                <div class='col-md-4 col-sm-12' :class="{ 'max-md:tw-hidden': data.showImage }">
-                    <img v-if="data._id" :src="`${data.coverImage}`" class="tw-rounded-xl tw-w-[100%]" />
+            <div class='col-md-8'>
+                <div class="col-md-12 row">
+                    <div class='col-md-4 col-sm-12' :class="{ 'max-md:tw-hidden': data.showImage }">
+                        <img v-if="data._id" :src="`${data.coverImage}`" class="tw-rounded-xl tw-w-[100%]" />
+                    </div>
+                    <div class='col-md-4 col-sm-12 tw-hidden max-md:tw-block'>
+                        <img v-if="data._id" :src="`${data.showImage}`" class="tw-rounded-xl tw-w-[100%]" />
+                    </div>
+                    <div class='col-md-8'>
+                        <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ data.name }}</h4>
+                        <h5 class='tw-my-3 tw-font-medium'>{{ data.title }}</h5>
+                        <div class="tw-mb-2 tw-text-[14px]">
+                            <label class="tw-w-[100px] tw-inline-block">Tác giả</label>
+                            <span>{{ data.author }}</span>
+                        </div>
+                        <div class="tw-mb-2 tw-text-[14px]">
+                            <label class="tw-w-[100px] tw-inline-block">Tình trạng</label>
+                            <span>{{ data.views ? 'Done' : 'In Progress' }}</span>
+                        </div>
+                        <div class="tw-mb-2 tw-text-[14px]">
+                            <label class="tw-w-[100px] tw-inline-block">Mới nhất</label>
+                            <span>
+                                <RouterLink class="tw-text-orange-600" :to="newestPage?.slug ?? '/'">{{ newestPage?.title }}
+                                </RouterLink>
+                            </span>
+                        </div>
+                        <div class="mb-4 text-[14px]">
+                            <label class="tw-w-[100px] tw-inline-block">Lượt đọc</label>
+                            <span>{{ data.views }}</span>
+                        </div>
+                        <div>
+                            <button
+                                class="tw-rounded-xl tw-mr-2 s1024:tw-mr-4 tw-px-3 tw-py-1 tw-bg-teal-600 tw-text-white tw-text-[14px] tw-font-light">Thích
+                                <span
+                                    class="tw-ml-[5px] tw-px-[5px] tw-text-[12px] tw-bg-white tw-rounded-lg tw-text-teal-600">132</span>
+                            </button>
+                            <button
+                                class="tw-rounded-xl tw-mr-2 s1024:tw-mr-4 tw-px-3 tw-py-1 tw-bg-teal-600 tw-text-white tw-text-[14px] tw-font-light">Theo
+                                Dõi
+                                <span
+                                    class="tw-ml-[5px] tw-px-[5px] tw-text-[12px] tw-bg-white tw-rounded-lg tw-text-teal-600">132</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class='col-md-4 col-sm-12 tw-hidden max-md:tw-block'>
-                    <img v-if="data._id" :src="`${data.showImage}`" class="tw-rounded-xl tw-w-[100%]" />
-                </div>
-                <div class='col-md-8'>
-                    <h4 class='tw-uppercase tw-text-[20px] tw-font-medium'>{{ data.name }}</h4>
-                    <h5 class='tw-my-3 tw-font-medium'>{{ data.title }}</h5>
-                    <div class="tw-mb-2 tw-text-[14px]">
-                        <label class="tw-w-[100px] tw-inline-block">Tác giả</label>
-                        <span>{{ data.author }}</span>
-                    </div>
-                    <div class="tw-mb-2 tw-text-[14px]">
-                        <label class="tw-w-[100px] tw-inline-block">Tình trạng</label>
-                        <span>{{ data.views ? 'Done' : 'In Progress' }}</span>
-                    </div>
-                    <div class="tw-mb-2 tw-text-[14px]">
-                        <label class="tw-w-[100px] tw-inline-block">Mới nhất</label>
-                        <span>
-                            <RouterLink class="tw-text-orange-600" :to="newestPage?.slug ?? '/'">{{ newestPage?.title }}
-                            </RouterLink>
-                        </span>
-                    </div>
-                    <div class="mb-4 text-[14px]">
-                        <label class="tw-w-[100px] tw-inline-block">Lượt đọc</label>
-                        <span>{{ data.views }}</span>
-                    </div>
-                    <div>
-                        <button
-                            class="tw-rounded-xl tw-mr-2 s1024:tw-mr-4 tw-px-3 tw-py-1 tw-bg-teal-600 tw-text-white tw-text-[14px] tw-font-light">Thích
-                            <span
-                                class="tw-ml-[5px] tw-px-[5px] tw-text-[12px] tw-bg-white tw-rounded-lg tw-text-teal-600">132</span>
-                        </button>
-                        <button
-                            class="tw-rounded-xl tw-mr-2 s1024:tw-mr-4 tw-px-3 tw-py-1 tw-bg-teal-600 tw-text-white tw-text-[14px] tw-font-light">Theo
-                            Dõi
-                            <span
-                                class="tw-ml-[5px] tw-px-[5px] tw-text-[12px] tw-bg-white tw-rounded-lg tw-text-teal-600">132</span>
-                        </button>
-                    </div>
 
-                </div>
-                <div class="tw-mt-[10px] tw-uppercase tw-text-orange-600">Nội dung</div>
+                <h5 class="tw-mt-[10px] tw-uppercase tw-text-orange-600">Nội dung</h5>
 
-                <div class="tw-mt-[5px] tw-text-[15px] tw-font-light">
+                <p class="tw-mt-[10px] tw-text-[15px] tw-font-light">
                     {{ data.description }}
-                </div>
+                </p>
 
-                <div class="tw-mt-[10px] tw-text-[15px] tw-font-light">
+                <div class="tw-mt-[10px] tw-text-[15px] tw-font-light tw-overflow-auto tw-min-h-[35px]">
                     <template v-if="data.genre">
                         <a v-for="genre in genre" v-bind:key="genre"
                             class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1" href="/">{{
@@ -125,11 +127,9 @@
 
                     <div class="tw-mt-[20px] tw-text-[14px] tw-font-extralight tw-manga-tag">
                         Từ khoá:
-                        <a class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" href="/nett">nett</a>
-                        <a class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" href="/nett">nett</a>
-                        <a class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" href="/nett">nett</a>
+                        <RouterLink class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" :to="'/' + data.slug">{{ data.name }}</RouterLink>
+                        <RouterLink class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" :to="'/' + data.slug">{{ data.author }}</RouterLink>
                     </div>
-
                 </div>
             </div>
             <div class='col-md-4'>
@@ -139,7 +139,7 @@
                         class="tw-w-full tw-text-orange-600 tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
                         <a href="/">Top tuần</a>
                     </h2>
-                    <div class="tw-s480:grid tw-s480:grid-cols-2 tw-s768:grid-cols-4 tw-s1024:block tw-gap-[10px]">
+                    <div class="tw-s480:grid tw-s480:grid-cols-2 tw-s768:grid-cols-4 tw-s1024:block tw-gap-[10px] tw-overflow-auto tw-max-h-[52rem]">
                         <div class="tw-mb-4 tw-s480:mb-0 tw-s1024:mb-4" v-for="top in listMangaTop" v-bind:key="top">
                             <RouterLink :to="'/' + top.slug" v-if="top._id">
                                 <div class="tw-relative tw-rounded-xl tw-overflow-hidden">
@@ -236,6 +236,7 @@ export default {
         store.dispatch('app/setIsLoading', true);
         await Promise.all([this.getDetail(), this.getListMangas(), this.getListMangasTop()]);
         document.title = `${this.data.name} - NetTruyenVui`;
+        document.title = `${this.data.title}`;
         this.listChapter = (await this.getListChapter())?.data;
         store.dispatch('app/setIsLoading', false);
     },
@@ -270,7 +271,7 @@ export default {
                     sortField: 'createdAt',
                     sortOrder: 'desc',
                     filterOptions: JSON.stringify({
-                        "genre":{"$regex":"\\bcomedy\\b","$options":"i"}
+                        "genre": { "$regex": "\\bcomedy\\b", "$options": "i" }
                     })
                 }
                 const response = await instance.get(`/manga/`, {
@@ -290,7 +291,7 @@ export default {
                     sortField: 'views',
                     sortOrder: 'asc',
                     filterOptions: JSON.stringify({
-                        "genre":{"$regex":"\\bYuri\\b","$options":"i"}
+                        "genre": { "$regex": "\\bYuri\\b", "$options": "i" }
                     })
                 }
                 const response = await instance.get(`/manga/`, {
@@ -341,4 +342,5 @@ export default {
 <style>
 .list-dont::-webkit-scrollbar {
     width: 1px;
-}</style>
+}
+</style>

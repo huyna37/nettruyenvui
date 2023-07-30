@@ -10,10 +10,14 @@ const state = {
   titleCurrent: "",
   env: process.env.NODE_ENV,
   isMobileDevice: false,
-  isNavOpen: false
+  isNavOpen: false,
+  currentPath: ''
 };
 
 const mutations = {
+  SET_CURRENTPATH: (state, val) => {
+    state.currentPath = val;
+  },
   SET_NavOpen: (state, val) => {
     state.isNavOpen = val;
   },
@@ -38,6 +42,9 @@ const mutations = {
 };
 
 const actions = {
+  setCurrentPath({ commit }, val) {
+    commit("SET_CURRENTPATH", val);
+  },
   setNavOpen({ commit }, val) {
     commit("SET_NavOpen", val);
   },
