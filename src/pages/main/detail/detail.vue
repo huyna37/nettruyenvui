@@ -55,9 +55,9 @@
 
                 <div class="tw-mt-[10px] tw-text-[15px] tw-font-light tw-overflow-auto tw-min-h-[35px]">
                     <template v-if="data.genre">
-                        <a v-for="genre in genre" v-bind:key="genre"
-                            class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1" href="/">{{
-                                genre }}</a>
+                        <RouterLink v-for="genre in genre" v-bind:key="genre"
+                            class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1" :to="'/the-loai/' + genre">{{
+                                genre }}</RouterLink>
                     </template>
                     <template v-else>
                         <a class="tw-bg-violet-200 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1 tw-py-1"
@@ -128,7 +128,7 @@
                     <div class="tw-mt-[20px] tw-text-[14px] tw-font-extralight tw-manga-tag">
                         Từ khoá:
                         <RouterLink class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" :to="'/' + data.slug">{{ data.name }}</RouterLink>
-                        <RouterLink class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" :to="'/' + data.slug">{{ data.author }}</RouterLink>
+                        <RouterLink class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" :to="'/' + data.slug" v-if="data.author">{{ data.author }}</RouterLink>
                     </div>
                 </div>
             </div>

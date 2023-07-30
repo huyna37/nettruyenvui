@@ -212,7 +212,7 @@ export default {
             let query = {
                 page: 1,
                 limit: 5,
-                sortField: 'createdAt',
+                sortField: 'views',
                 sortOrder: 'desc',
                 filterOptions: JSON.stringify({ "genre": { "$regex": "\\bharem\\b", "$options": "i" } })
             }
@@ -223,7 +223,7 @@ export default {
             this.mangas1 = response.data.result.data;
         },
         async getMangas2() {
-            this.mangas2 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "\\baction\\b", $options: "i"}&sortField=createdAt&sortOrder=desc')).data.result.data;
+            this.mangas2 = (await instance.get('/manga/?page=1&limit=12&filterOptions={"genre": { $regex: "\\baction\\b", $options: "i"}&sortField=views&sortOrder=desc')).data.result.data;
         },
         async getMangas3() {
             this.mangas3 = (await instance.get('/manga/?page=1&limit=12&sortField=name&filterOptions={"genre": { $regex: "\\bharem\\b", $options: "i"}&sortOrder=desc')).data.result.data;
