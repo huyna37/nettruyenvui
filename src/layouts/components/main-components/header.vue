@@ -3,7 +3,7 @@
     <div class="container">
       <RouterLink
         class="navbar-brand tw-bg-clip-text tw-text-transparent tw-bg-gradient-to-r tw-from-red-500 tw-to-violet-500 tw-dark:from-red-500 tw-dark:to-teal-600 tw-text-[22px]"
-        to="/">TRUYENVUI</RouterLink>
+        to="/">TRUYENVUI.ONLINE</RouterLink>
       <button class="navbar-toggler" type="button" @click="toggleNav()" aria-controls="navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
       </button>

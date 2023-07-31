@@ -3,7 +3,7 @@ import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 
 const instance = axios.create({
-  baseURL: 'https://crawler.meoden.online/',
+  baseURL: 'https://api.truyenvui.online/',
 });
 
 instance.interceptors.request.use(

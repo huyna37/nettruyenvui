@@ -105,11 +105,11 @@
             class="tw-rounded-lg tw-mt-[1rem] max-lg:tw-mt-0 row tw-bg-violet-900/80 dark:tw-bg-orange-600/80 tw-max-h-[220px]">
             <section class="tw-relative tw-px-[10px] tw-py-[10px] s768:tw-py-[10px]">
                 <h2 class="tw-w-full tw-text-white tw-mb-2 tw-underline tw-underline-offset-4 tw-decoration-2 tw-uppercase">
-                    <a href="/truyen-co-phim">TRUYỆN CÓ PHIM</a>
+                    <a href="/truyen-co-phim">TRUYỆN CÓ THỂ PHIM</a>
                 </h2>
                 <div class="tw-flex movie-list tw-snap-x tw-snap-mandatory tw-overflow-y-auto tw-scrollbar-none s640:tw-grid s640:tw-grid-cols-4 tw-gap-[10px]"
                     id="movie-list" :style="scrollContainerStyle">
-                    <div v-for="(data4) in mangas3" v-bind:key="data4"
+                    <div v-for="(data4) in mangas2" v-bind:key="data4"
                         class="tw-relative tw-snap-always tw-snap-start tw-shrink-0 tw-w-[290px] s640:tw-w-auto s640:tw-h-auto tw-min-h-[190px]">
                         <RouterLink :to="data4.slug">
                             <div class="tw-overflow-hidden tw-w-full tw-rounded-xl">
@@ -235,6 +235,7 @@ export default {
                 limit: 12,
                 sortField: "views",
                 sortOrder: "desc",
+                filterOptions: JSON.stringify({ "genre": { "$regex": "\\becchi\\b", "$options": "i" } })
             };
             const url = '/manga/?' + new URLSearchParams(query);
             this.mangas4 = (await instance.get(url)).data.result.data;
