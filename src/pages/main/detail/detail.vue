@@ -113,8 +113,12 @@
 
 
                     </div>
-                    <div @click="loadMore"
-                        class="chapter-more tw-mb-3 tw-inline-block tw-cursor-pointer tw-rounded-xl tw-bg-orange-600 dark:tw-bg-orange-700 tw-px-4 tw-py-1 tw-text-white tw-text-[14px] tw-font-light">
+                    <div>
+                        <RouterLink :to="`${$route.path}/chap-1`" class="tw-text-bold me-2 tw-mb-3 tw-inline-block tw-cursor-pointer tw-rounded-xl tw-bg-blue-600 dark:tw-bg-orange-700 tw-px-4 tw-py-1 tw-text-white tw-text-[14px] tw-font-light">
+                            Đọc Từ Đầu
+                        </RouterLink>
+                        <div @click="loadMore"
+                            class="chapter-more tw-mb-3 tw-inline-block tw-cursor-pointer tw-rounded-xl tw-bg-orange-600 dark:tw-bg-orange-700 tw-px-4 tw-py-1 tw-text-white tw-text-[14px] tw-font-light">
                         <span>
                             <template v-if="isLoadingMore">
                                 <i class="fa-solid fa-spinner tw-animate-spin"></i>
@@ -123,8 +127,9 @@
                                 Xem Thêm
                             </template>
                         </span>
+                        </div>
                     </div>
-
+                   
                     <div class="tw-mt-[20px] tw-text-[14px] tw-font-extralight tw-manga-tag">
                         Từ khoá:
                         <RouterLink class="tw-bg-gray-300 dark:tw-bg-slate-700 tw-rounded-lg tw-px-2 tw-mr-1" :to="'/' + data.slug">{{ data.name }}</RouterLink>
@@ -229,7 +234,8 @@ export default {
             scrollContainerStyle: {
                 scrollBehavior: "smooth",
                 overflowX: "scroll",
-            }
+            },
+            filterBy: ''
         }
     },
     async created() {
@@ -306,10 +312,10 @@ export default {
         async getDetail() {
             this.data = (await instance.get('/manga/' + this.name)).data.result;
         },
-        async getListChapter(filterBy) {
+        async getListChapter() {
             let url = `/chapter/?page=${this.currentPage}&index=10&sortField=number&sortOrder=desc&filterOptions={"manga":"${this.data._id}"}`;
-            if (filterBy) {
-                url = `/chapter/?page=${this.currentPage}&index=10&sortField=number&sortOrder=desc&filterOptions={"manga":"${this.data._id}"}&filter={"title": "${filterBy}"}`;
+            if (this.filterBy) {
+                url = `/chapter/?page=${this.currentPage}&index=10&sortField=number&sortOrder=desc&filterOptions={"manga":"${this.data._id}"}&filter={"title": "${this.filterBy}"}`;
             }
             return (await instance.get(url)).data.result;
         },
@@ -321,8 +327,9 @@ export default {
             this.isLoadingMore = false;
         },
         async handleInput(event) {
-            console.log(event.target.value);
-            this.listChapter = (await this.getListChapter(event.target.value)).data;
+            this.filterBy = event.target.value;
+            this.currentPage = 1;
+            this.listChapter = (await this.getListChapter()).data;
         },
     },
     computed: {
