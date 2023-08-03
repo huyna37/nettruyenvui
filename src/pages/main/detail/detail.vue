@@ -242,7 +242,6 @@ export default {
         store.dispatch('app/setIsLoading', true);
         await Promise.all([this.getDetail(), this.getListMangas(), this.getListMangasTop()]);
         document.title = `${this.data.name} - NetTruyenVui`;
-        document.title = `${this.data.title}`;
         this.listChapter = (await this.getListChapter())?.data;
         store.dispatch('app/setIsLoading', false);
     },
